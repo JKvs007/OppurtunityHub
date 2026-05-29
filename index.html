@@ -604,6 +604,7 @@ function toggleProfileDropdown(profileLink) {
 }
 
 function handleGlobalSignOut() {
+    if (typeof auth !== 'undefined' && auth) { try { auth.signOut(); } catch(e) {} }
     localStorage.removeItem('user_logged_in');
     localStorage.removeItem('user_role');
     localStorage.removeItem('user');
