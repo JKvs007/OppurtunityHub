@@ -178,6 +178,14 @@
 <button class="text-primary font-label-md text-label-md hover:underline" onclick="clearAllFilters()">Clear all</button>
 </div>
 <div class="space-y-md filter-scroll max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+<!-- Recruiter Filter (Visible only to providers) -->
+<div id="recruiter-filter-container" class="hidden border-b border-outline-variant/20 pb-sm mb-xs">
+    <label class="font-label-md text-label-md text-primary block mb-sm">Recruiter Controls</label>
+    <label class="flex items-center gap-xs cursor-pointer group">
+        <input id="mylistings-checkbox" class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" onchange="toggleMyListingsOnly(this.checked)"/>
+        <span class="font-body-sm text-body-sm text-on-surface font-semibold group-hover:text-primary transition-colors">Show my listings only</span>
+    </label>
+</div>
 <!-- Search Filter -->
 <div>
 <label class="font-label-md text-label-md text-on-surface-variant block mb-xs">Keyword</label>
@@ -264,7 +272,7 @@
 </div>
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-gutter" id="opportunities-list">
 <!-- Card 1: Remote Role -->
-<article data-id="1" data-title="Senior Frontend Developer" data-company="UST" data-category="engineering" data-mode="remote" data-comp="paid" data-location="remote" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<article data-id="1" data-title="Senior Frontend Developer" data-company="UST" data-category="engineering" data-mode="remote" data-comp="paid" data-location="remote" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html?id=1'">
 <div class="absolute top-md right-md">
 <button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('1', this)">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
@@ -295,13 +303,13 @@
                     </p>
 <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
 <span class="font-label-sm text-label-sm text-outline">Posted 2h ago</span>
-<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html?id=1'">
                             Apply Now
                         </button>
 </div>
 </article>
 <!-- Card 2: Hybrid Role -->
-<article data-id="2" data-title="UX/UI Product Designer" data-company="IBS Software" data-category="design" data-mode="hybrid" data-comp="paid" data-location="kochi" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<article data-id="2" data-title="UX/UI Product Designer" data-company="IBS Software" data-category="design" data-mode="hybrid" data-comp="paid" data-location="kochi" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html?id=2'">
 <div class="absolute top-md right-md z-10">
 <button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('2', this)">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
@@ -343,13 +351,13 @@
 </div>
 <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
 <span class="font-label-sm text-label-sm text-outline">Posted 1d ago</span>
-<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html?id=2'">
                             Apply Now
                         </button>
 </div>
 </article>
 <!-- Card 3: Machine Learning Engineer -->
-<article data-id="3" data-title="Machine Learning Engineer" data-company="TCS" data-category="engineering" data-mode="hybrid" data-comp="paid" data-location="thiruvananthapuram" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<article data-id="3" data-title="Machine Learning Engineer" data-company="TCS" data-category="engineering" data-mode="hybrid" data-comp="paid" data-location="thiruvananthapuram" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html?id=3'">
 <div class="absolute top-md right-md">
 <button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('3', this)">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
@@ -380,13 +388,13 @@
                     </p>
 <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
 <span class="font-label-sm text-label-sm text-outline">Posted 2 days ago</span>
-<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html?id=3'">
                             Apply Now
                         </button>
 </div>
 </article>
 <!-- Card 4: Remote UX Designer -->
-<article data-id="4" data-title="Senior UX Designer" data-company="Infosys" data-category="design" data-mode="remote" data-comp="paid" data-location="remote" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<article data-id="4" data-title="Senior UX Designer" data-company="Infosys" data-category="design" data-mode="remote" data-comp="paid" data-location="remote" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html?id=4'">
 <div class="absolute top-md right-md">
 <button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('4', this)">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
@@ -414,13 +422,13 @@
                     </p>
 <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
 <span class="font-label-sm text-label-sm text-outline">Posted 5 hours ago</span>
-<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html?id=4'">
                             Apply Now
                         </button>
 </div>
 </article>
 <!-- Card 5: Onsite Intern -->
-<article data-id="5" data-title="Quantitative Analyst Intern" data-company="Wipro" data-category="product" data-mode="onsite" data-comp="unpaid" data-location="kochi" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<article data-id="5" data-title="Quantitative Analyst Intern" data-company="Wipro" data-category="product" data-mode="onsite" data-comp="unpaid" data-location="kochi" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html?id=5'">
 <div class="absolute top-md right-md">
 <button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('5', this)">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
@@ -448,7 +456,7 @@
                     </p>
 <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
 <span class="font-label-sm text-label-sm text-outline">Posted 1 day ago</span>
-<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html?id=5'">
                             Apply Now
                         </button>
 </div>
@@ -483,7 +491,14 @@
 <script>
 // Filter state variables
 let bookmarksOnly = false;
+let myListingsOnly = false;
 const activeWorkModes = new Set(['remote', 'hybrid', 'onsite']);
+
+async function loadAndRender() {
+    const oppList = await getOpportunities();
+    renderOpportunitiesList(oppList);
+    filterOpportunities();
+}
 
 function getRemovedOpportunities() {
     try {
@@ -514,7 +529,8 @@ function renderOpportunitiesList(list) {
         card.setAttribute('data-mode', opp.mode);
         card.setAttribute('data-comp', opp.comp);
         card.setAttribute('data-location', opp.locationText || opp.location);
-        card.onclick = () => window.location.href = 'job-details.html';
+        card.setAttribute('data-publisher', opp.publisherEmail || '');
+        card.onclick = () => window.location.href = `job-details.html?id=${opp.id}`;
         
         // Bookmark status
         const isBookmarked = getBookmarks().includes(opp.id);
@@ -592,18 +608,22 @@ function renderOpportunitiesList(list) {
             </div>
             <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant z-10">
                 <span class="font-label-sm text-label-sm text-outline">${opp.posted}</span>
-                <button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                <button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html?id=${opp.id}'">
                     Apply Now
                 </button>
             </div>
         `;
-        
-        // Add Admin controls
-        if (isAdmin) {
+        // Add Admin or Owner controls
+        const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        const role = currentUser.role || 'seeker';
+        const isOwner = opp.publisherEmail && currentUser.email && opp.publisherEmail === currentUser.email;
+
+        if (isAdmin || (isLoggedIn && role === 'provider' && isOwner)) {
             const deleteBtn = document.createElement('button');
             deleteBtn.className = 'absolute top-12 right-2 p-1.5 bg-error/10 hover:bg-error hover:text-white text-error rounded-full transition-all z-20 flex items-center justify-center';
             deleteBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">delete</span>';
-            deleteBtn.title = 'Remove Fake Company/Listing';
+            deleteBtn.title = 'Remove Listing';
             deleteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 if (confirm('Are you sure you want to remove this listing?')) {
@@ -620,12 +640,6 @@ function renderOpportunitiesList(list) {
         
         container.appendChild(card);
     });
-}
-
-async function loadAndRender() {
-    const oppList = await getOpportunities();
-    renderOpportunitiesList(oppList);
-    filterOpportunities();
 }
 
 // Load parameters and setup filters
@@ -645,6 +659,18 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         `;
         document.body.prepend(banner);
+    }
+
+    // Dynamic Navigation and Role setup
+    updateGlobalNavigation();
+    
+    const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const role = currentUser.role || 'seeker';
+    
+    if (isLoggedIn && role === 'provider') {
+        const rFilter = document.getElementById('recruiter-filter-container');
+        if (rFilter) rFilter.classList.remove('hidden');
     }
 
     // Parse URL Query parameters
@@ -669,6 +695,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (filterVal === 'bookmarks') {
         bookmarksOnly = true;
         updateBookmarkIconState();
+    }
+    if (filterVal === 'mylistings') {
+        myListingsOnly = true;
+        const cb = document.getElementById('mylistings-checkbox');
+        if (cb) cb.checked = true;
     }
 
     loadAndRender();
@@ -746,6 +777,11 @@ function toggleWorkMode(button) {
     filterOpportunities();
 }
 
+function toggleMyListingsOnly(checked) {
+    myListingsOnly = checked;
+    filterOpportunities();
+}
+
 // Clear all filters
 function clearAllFilters() {
     document.getElementById('keyword-search').value = '';
@@ -765,6 +801,10 @@ function clearAllFilters() {
     });
     
     bookmarksOnly = false;
+    myListingsOnly = false;
+    const mycb = document.getElementById('mylistings-checkbox');
+    if (mycb) mycb.checked = false;
+
     updateBookmarkIconState();
     filterOpportunities();
 }
@@ -781,6 +821,9 @@ function filterOpportunities() {
     const bookmarks = getBookmarks();
     const removed = getRemovedOpportunities();
 
+    const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
     let visibleCount = 0;
 
     document.querySelectorAll('.opp-card').forEach(card => {
@@ -795,6 +838,7 @@ function filterOpportunities() {
         const mode = card.getAttribute('data-mode');
         const comp = card.getAttribute('data-comp');
         const loc = card.getAttribute('data-location').toLowerCase();
+        const publisher = card.getAttribute('data-publisher') || '';
 
         // 1. Keyword check
         const keywordMatch = !keyword || title.includes(keyword) || company.includes(keyword);
@@ -814,7 +858,10 @@ function filterOpportunities() {
         // 6. Bookmarks check
         const bookmarkMatch = !bookmarksOnly || bookmarks.includes(id);
 
-        if (keywordMatch && locationMatch && categoryMatch && workModeMatch && compMatch && bookmarkMatch) {
+        // 7. Recruiter's listings check
+        const myListingsMatch = !myListingsOnly || (isLoggedIn && publisher === currentUser.email);
+
+        if (keywordMatch && locationMatch && categoryMatch && workModeMatch && compMatch && bookmarkMatch && myListingsMatch) {
             card.style.display = 'flex';
             visibleCount++;
         } else {
@@ -824,6 +871,125 @@ function filterOpportunities() {
 
     // Update visibility count UI
     document.getElementById('showing-count').innerText = `Showing ${visibleCount} relevant role${visibleCount === 1 ? '' : 's'}`;
+}
+
+// Dynamic Navigation and Profile Dropdown Logic
+function updateGlobalNavigation() {
+    const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const role = currentUser.role || 'seeker';
+
+    // 1. Update Navigation Links
+    const navLinks = document.querySelectorAll('nav a, header nav a');
+    navLinks.forEach(link => {
+        const text = link.textContent.trim();
+        if (text === 'My Applications' || text === 'Manage Listings' || text === 'Recruiter Dashboard') {
+            if (isLoggedIn && role === 'provider') {
+                link.textContent = 'Manage Listings';
+                link.href = 'browse.html?filter=mylistings';
+            } else {
+                link.textContent = 'My Applications';
+                link.href = isLoggedIn ? 'browse.html?filter=applications' : 'signin.html';
+            }
+        }
+    });
+
+    // 2. Show Post Internship Link for Providers in Desktop Nav
+    const navContainers = document.querySelectorAll('nav.hidden.md\\:flex, header nav.hidden.md\\:flex');
+    navContainers.forEach(container => {
+        if (isLoggedIn && role === 'provider') {
+            let hasPostLink = false;
+            container.querySelectorAll('a').forEach(a => {
+                if (a.href.includes('post.html')) hasPostLink = true;
+            });
+            if (!hasPostLink) {
+                const postLink = document.createElement('a');
+                postLink.className = "text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors px-sm py-xs hover:bg-surface-container-high/50 rounded-lg transition-all active:scale-95 duration-200 font-label-md text-label-md";
+                postLink.textContent = 'Post Internship';
+                postLink.href = 'post.html';
+                container.appendChild(postLink);
+            }
+        }
+    });
+
+    // 3. Setup Dropdown profile
+    const profileLinks = document.querySelectorAll('a[href="signin.html"]');
+    profileLinks.forEach(profileLink => {
+        const img = profileLink.querySelector('img');
+        if (!img) return;
+
+        if (!isLoggedIn) return;
+
+        profileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleProfileDropdown(profileLink);
+        });
+
+        const parent = profileLink.parentElement;
+        if (parent) {
+            parent.style.position = 'relative';
+            let dropdown = parent.querySelector('#profile-dropdown-menu');
+            if (!dropdown) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'profile-dropdown-menu';
+                dropdown.className = 'hidden absolute right-0 top-12 w-64 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-xl p-md z-[100] flex flex-col gap-sm text-left';
+                dropdown.innerHTML = `
+                    <div class="border-b border-outline-variant/20 pb-sm mb-xs">
+                        <p class="font-label-md text-label-md text-on-surface font-bold truncate">${currentUser.name || 'User'}</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${currentUser.email || ''}</p>
+                        <span class="inline-block mt-xs bg-primary/10 text-primary font-label-sm text-[11px] px-2 py-0.5 rounded-full capitalize">
+                            ${role === 'provider' ? 'Internship Provider' : 'Internship Seeker'}
+                        </span>
+                    </div>
+                    ${role === 'provider' ? `
+                        <a href="post.html" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">add_circle</span> Post Internship
+                        </a>
+                        <a href="browse.html?filter=mylistings" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">work</span> Manage My Listings
+                        </a>
+                    ` : `
+                        <a href="browse.html?filter=bookmarks" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">bookmark</span> Saved Opportunities
+                        </a>
+                    `}
+                    <button onclick="handleGlobalSignOut()" class="w-full mt-xs flex items-center gap-xs p-2 rounded-lg hover:bg-error/10 text-error transition-colors font-label-md text-label-md text-left">
+                        <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+                    </button>
+                `;
+                parent.appendChild(dropdown);
+            }
+        }
+    });
+
+    document.addEventListener('click', () => {
+        const dropdowns = document.querySelectorAll('#profile-dropdown-menu');
+        dropdowns.forEach(d => d.classList.add('hidden'));
+    });
+}
+
+function toggleProfileDropdown(profileLink) {
+    const parent = profileLink.parentElement;
+    if (parent) {
+        const dropdown = parent.querySelector('#profile-dropdown-menu');
+        if (dropdown) {
+            const isHidden = dropdown.classList.contains('hidden');
+            document.querySelectorAll('#profile-dropdown-menu').forEach(d => d.classList.add('hidden'));
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+            }
+        }
+    }
+}
+
+function handleGlobalSignOut() {
+    localStorage.removeItem('user_logged_in');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('user');
+    localStorage.removeItem('admin_logged_in');
+    alert("Signed out successfully.");
+    window.location.href = 'index.html';
 }
 </script>
 </body></html>

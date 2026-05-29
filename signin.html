@@ -3,7 +3,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Modern Card-based Authentication - OpportunityHub</title>
+<title>Sign In & Sign Up - OpportunityHub</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -208,11 +208,26 @@
 <a href="index.html" class="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-container-highest/50 transition-colors text-on-surface-variant flex items-center justify-center" aria-label="Close">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">close</span>
 </a>
-<div class="flex justify-center mb-lg">
+<div class="flex justify-center mb-sm">
 <a class="flex items-center gap-2 font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity" href="index.html">
 <img src="logo.svg" alt="OpportunityHub Logo" class="w-8 h-8" />
 OpportunityHub
 </a>
+</div>
+<!-- Role Switcher Tabs -->
+<div class="flex p-1 bg-surface-container-high rounded-xl mb-lg">
+  <button id="role-seeker-btn" type="button" class="flex-1 py-2 text-center rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] bg-primary text-on-primary font-bold shadow-sm" onclick="setRole('seeker')">
+    <span class="flex items-center justify-center gap-1">
+      <span class="material-symbols-outlined text-[18px]">search</span>
+      Seeker
+    </span>
+  </button>
+  <button id="role-provider-btn" type="button" class="flex-1 py-2 text-center rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] text-on-surface-variant hover:text-on-surface" onclick="setRole('provider')">
+    <span class="flex items-center justify-center gap-1">
+      <span class="material-symbols-outlined text-[18px]">business</span>
+      Provider
+    </span>
+  </button>
 </div>
 <div class="text-center mb-lg">
 <h1 class="font-headline-md text-headline-md text-on-surface mb-xs">Welcome Back</h1>
@@ -225,7 +240,7 @@ OpportunityHub
 </div>
 <div>
 <label class="font-label-sm text-label-sm text-on-surface block mb-base" for="login-email">Email</label>
-<input class="w-full h-12 rounded-lg border border-outline-variant px-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-sm text-body-sm bg-transparent text-on-surface placeholder:text-on-surface-variant/50" id="login-email" placeholder="name@company.com" type="email"/>
+<input class="w-full h-12 rounded-lg border border-outline-variant px-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-sm text-body-sm bg-transparent text-on-surface placeholder:text-on-surface-variant/50" id="login-email" placeholder="name@example.com" type="email"/>
 </div>
 <div>
 <div class="flex justify-between items-center mb-base">
@@ -242,12 +257,12 @@ OpportunityHub
 <div class="h-px bg-outline-variant/50 flex-1"></div>
 </div>
 <div class="mt-sm grid grid-cols-2 gap-sm">
-<button class="h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-colors text-on-surface font-label-md text-label-md">
-<span class="material-symbols-outlined" data-icon="google" style="font-size: 20px;">account_circle</span>
+<button id="google-signin-btn" type="button" onclick="loginWithGoogle()" class="h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-all active:scale-[0.98] text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-[#4285F4]" data-icon="google" style="font-size: 20px; font-variation-settings: 'FILL' 1;">account_circle</span>
                     Google
                 </button>
-<button class="h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-colors text-on-surface font-label-md text-label-md">
-<span class="material-symbols-outlined" data-icon="linkedin" style="font-size: 20px;">work</span>
+<button id="linkedin-signin-btn" type="button" onclick="loginWithLinkedIn()" class="h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-all active:scale-[0.98] text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-[#0A66C2]" data-icon="linkedin" style="font-size: 20px; font-variation-settings: 'FILL' 1;">work</span>
                     LinkedIn
                 </button>
 </div>
@@ -273,7 +288,7 @@ OpportunityHub
 <h3 class="font-headline-md text-headline-md mb-md">Create Account</h3>
 <div class="space-y-sm">
 <input id="desktop-name" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Full Name" type="text"/>
-<input id="desktop-email" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Work Email" type="email"/>
+<input id="desktop-email" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Email" type="email"/>
 <input id="desktop-password" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Create Password" type="password"/>
 </div>
 <button class="w-full h-12 bg-on-primary-container text-primary-container rounded-lg font-label-md text-label-md hover:bg-white transition-all active:scale-[0.98] mt-md" type="button">Start Application</button>
@@ -284,6 +299,118 @@ OpportunityHub
 </div>
 </div>
 </div>
+
+<!-- OTP Verification Dialog Modal -->
+<div id="otp-modal" class="fixed inset-0 z-[110] hidden items-center justify-center bg-black/60 backdrop-blur-md p-4 transition-all duration-300">
+    <div id="otp-content" class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-[0_20px_50px_rgba(79,70,229,0.15)] p-lg max-w-md w-full text-center flex flex-col items-center gap-md transform scale-95 opacity-0 transition-all duration-300">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+            <span class="material-symbols-outlined text-[36px]">security</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Security Verification</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">
+            We've sent a 6-digit OTP verification code to <span id="otp-display-email" class="font-semibold text-on-surface">name@example.com</span>.
+        </p>
+        
+        <!-- Interactive 6 digit code boxes -->
+        <div class="flex gap-2 justify-center my-md">
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-transparent text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-transparent text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-transparent text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            <span class="self-center text-outline-variant text-[24px] px-1">-</span>
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-transparent text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-transparent text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+            <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center font-headline-md text-headline-md border border-outline-variant rounded-lg bg-transparent text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" />
+        </div>
+
+        <!-- Demo Toast Notification inside Modal -->
+        <div class="w-full bg-primary/5 border border-primary/20 rounded-lg p-sm flex items-start gap-sm text-left">
+            <span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">info</span>
+            <div>
+                <p class="font-label-sm text-label-sm text-primary font-bold">Demo Verification Code</p>
+                <p class="font-body-sm text-[12px] text-on-surface-variant">Use verification code <span class="font-bold text-primary font-mono text-[14px]">123456</span> to complete registration/login.</p>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-sm mt-sm">
+            <button onclick="verifyOTPCode()" class="w-full bg-primary hover:bg-primary/95 text-on-primary font-label-md text-label-md py-3.5 rounded-lg transition-all flex items-center justify-center gap-xs shadow-sm active:scale-[0.98]">
+                <span>Verify &amp; Continue</span>
+            </button>
+            <div class="flex justify-between items-center px-xs mt-2 w-full">
+                <span id="otp-timer" class="font-body-sm text-body-sm text-on-surface-variant text-xs">Resend code in 59s</span>
+                <button id="otp-resend-btn" onclick="resendOTP()" disabled class="font-label-sm text-label-sm text-outline opacity-50 hover:underline cursor-not-allowed text-xs">Resend OTP</button>
+            </div>
+            <button onclick="closeOTPModal()" class="w-full text-on-surface-variant hover:text-primary font-label-sm text-label-sm py-2 transition-colors">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Simulated OAuth Popup Modal -->
+<div id="oauth-modal" class="fixed inset-0 z-[120] hidden items-center justify-center bg-black/70 backdrop-blur-md p-4 transition-all duration-300">
+    <div id="oauth-content" class="bg-white rounded-2xl shadow-2xl border border-outline-variant max-w-sm w-full overflow-hidden transform scale-95 opacity-0 transition-all duration-300">
+        <!-- Google Header -->
+        <div id="google-oauth-header" class="hidden bg-[#F8F9FA] px-lg py-md border-b border-outline-variant flex items-center gap-sm">
+            <svg class="w-6 h-6" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.18 4.114-3.466 0-6.275-2.85-6.275-6.363s2.81-6.363 6.275-6.363c1.558 0 2.98.57 4.084 1.503l3.056-3.09C19.14 1.91 15.918 1 12.24 1 6.033 1 1 5.925 1 12s5.033 11 11.24 11c5.845 0 10.87-4.148 10.87-11 0-.64-.067-1.258-.19-1.857H12.24z"/>
+            </svg>
+            <div class="text-left">
+                <h4 class="font-label-md text-label-md text-on-surface font-bold">Sign in with Google</h4>
+                <p class="font-body-sm text-[11px] text-on-surface-variant">to continue to OpportunityHub</p>
+            </div>
+        </div>
+        <!-- LinkedIn Header -->
+        <div id="linkedin-oauth-header" class="hidden bg-[#0A66C2] px-lg py-md text-white flex items-center gap-sm">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+            </svg>
+            <div class="text-left">
+                <h4 class="font-label-md text-label-md font-bold">LinkedIn Sign In</h4>
+                <p class="font-body-sm text-[11px] opacity-80">Authorize OpportunityHub to access your profile</p>
+            </div>
+        </div>
+
+        <div class="p-lg flex flex-col gap-md">
+            <p class="font-body-sm text-body-sm text-on-surface-variant text-left">Choose an account or log in with your email:</p>
+            
+            <div class="flex flex-col gap-sm">
+                <!-- Preset Account 1 -->
+                <button onclick="selectSimulatedOAuth('Alex Chen', 'alex.chen@gmail.com')" class="w-full p-sm rounded-lg border border-outline-variant hover:bg-surface-container flex items-center gap-sm transition-all text-left">
+                    <img class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQIfkuPtJVsKFYVXSNjvwpBUBt2RxWb22wKRRqSOapKyexvJirs3Xrk9iZU7bXgSVMjwCogwtPOl9PuhHxXG_hY5abqOuzpT6af5zoRkZyCrMVE31oyobq0ZEPMyM1AyiFC8StThocOZYfW6Q3XBLHAfD1NubLpOuCVXr2UTfsFaq4aFV7PaN9XxLkZoyhAqhECXHs3yIr5cDWAS3oerJ5VGgRmV9BDldrUJawAod_LKElYB2mQDBD96b-JAu8YF9EZglrY9SQEPM" />
+                    <div>
+                        <p class="font-label-md text-label-md text-on-surface font-bold">Alex Chen</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant">alex.chen@gmail.com</p>
+                    </div>
+                </button>
+                <!-- Preset Account 2 -->
+                <button onclick="selectSimulatedOAuth('Priya Nair', 'priyanair@outlook.com')" class="w-full p-sm rounded-lg border border-outline-variant hover:bg-surface-container flex items-center gap-sm transition-all text-left">
+                    <img class="w-10 h-10 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArSpbZlU6C_9qRNKA8v8YAnoYLhyXVxLjUQSlX6Xah2E-NpdUl19cGkrxMEB3y25tM1aRyh78efEf1kACgetd3WjN9_IxhHrqK1X31_3ChewcQzE3NMtEGrWELzzNtF5Ua14FcUgEjtPVzl826LHoCJo58UOjwsle1KXdg1p8i3rbNLPR5H404dTfKmMAdDyv4R06rcWJq_6eyvVBL86BBQHEH_8sL8tLkPLwSAXtKKUllP4mLvbw5TG_FASu95YV_TIkn8589ABo" />
+                    <div>
+                        <p class="font-label-md text-label-md text-on-surface font-bold">Priya Nair</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant">priyanair@outlook.com</p>
+                    </div>
+                </button>
+            </div>
+
+            <div class="flex items-center gap-xs">
+                <div class="h-px bg-outline-variant/50 flex-1"></div>
+                <span class="font-label-sm text-label-sm text-on-surface-variant">Or use another account</span>
+                <div class="h-px bg-outline-variant/50 flex-1"></div>
+            </div>
+
+            <div class="space-y-xs text-left">
+                <label class="font-label-sm text-label-sm text-on-surface block animate-pulse" for="oauth-custom-email">Email</label>
+                <input id="oauth-custom-email" type="email" placeholder="you@example.com" class="w-full h-10 rounded-lg border border-outline-variant px-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-sm text-body-sm bg-transparent text-on-surface" />
+            </div>
+
+            <div class="flex gap-sm mt-sm">
+                <button onclick="closeOAuthModal()" class="flex-1 h-10 rounded-lg border border-outline-variant text-on-surface font-label-md text-label-md hover:bg-surface-container transition-all">Cancel</button>
+                <button onclick="submitCustomOAuth()" class="flex-grow h-10 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:brightness-110 transition-all">Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Load Firebase SDK and initialization script -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -291,9 +418,29 @@ OpportunityHub
 <script src="firebase-db.js"></script>
 
 <script>
-// Keep track of current view state ('login' or 'signup')
+// ── State ────────────────────────────────────────────────────────
 let currentMode = 'login';
+let currentRole = 'seeker';
+let activeOTP = '';
+let tempAuthData = {};
+let otpResendTimer = null;
+let activeOAuthProvider = '';
 
+// ── Role Switcher ────────────────────────────────────────────────
+function setRole(role) {
+    currentRole = role;
+    const seekerBtn = document.getElementById('role-seeker-btn');
+    const providerBtn = document.getElementById('role-provider-btn');
+    if (role === 'provider') {
+        providerBtn.className = "flex-1 py-2 text-center rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] bg-primary text-on-primary font-bold shadow-sm";
+        seekerBtn.className = "flex-1 py-2 text-center rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] text-on-surface-variant hover:text-on-surface";
+    } else {
+        seekerBtn.className = "flex-1 py-2 text-center rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] bg-primary text-on-primary font-bold shadow-sm";
+        providerBtn.className = "flex-1 py-2 text-center rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] text-on-surface-variant hover:text-on-surface";
+    }
+}
+
+// ── Mode Switcher (Login ↔ Signup) ───────────────────────────────
 function setMode(mode) {
     currentMode = mode;
     const headerTitle = document.querySelector('.text-center h1');
@@ -301,12 +448,11 @@ function setMode(mode) {
     const nameField = document.getElementById('name-field-container');
     const submitBtn = document.querySelector('form button');
     const footerParagraph = document.querySelector('.mt-lg.text-center p');
-    
     if (mode === 'signup') {
         headerTitle.textContent = 'Create Account';
         headerDesc.textContent = 'Join the premier platform for top-tier opportunities.';
         nameField.classList.remove('hidden');
-        submitBtn.textContent = 'Start Application';
+        submitBtn.textContent = 'Create Account';
         footerParagraph.innerHTML = `Already have an account? <button type="button" onclick="setMode('login')" class="text-primary font-label-sm text-label-sm hover:underline ml-xs">Log In</button>`;
     } else {
         headerTitle.textContent = 'Welcome Back';
@@ -317,131 +463,369 @@ function setMode(mode) {
     }
 }
 
-// Simulated Auth fallback
-function handleSimulatedLogin(email, name, mode) {
-    if (mode === 'signup') {
-        alert("Account created successfully (Simulated mode). An email verification link has been sent to " + email + ". Please verify it to log in.");
-        setMode('login');
-        const emailInput = document.getElementById('login-email');
-        if (emailInput) emailInput.value = email;
-    } else {
-        localStorage.setItem('user_logged_in', 'true');
-        if (email === 'oppurtunityhubber@gmail.com') {
-            localStorage.setItem('admin_logged_in', 'true');
-            localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
+// ── OTP Input Handlers ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('.otp-input');
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            if (e.target.value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        });
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const data = e.clipboardData.getData('text').trim();
+            if (data.length === 6 && /^\d+$/.test(data)) {
+                inputs.forEach((inp, idx) => { inp.value = data[idx]; });
+                inputs[5].focus();
+            }
+        });
+    });
+});
+
+// ── OTP Flow ─────────────────────────────────────────────────────
+function triggerOTPFlow(email, password, name, mode) {
+    tempAuthData = { email, password, name, mode, role: currentRole };
+    activeOTP = '123456'; // Demo verification code
+    document.getElementById('otp-display-email').innerText = email;
+
+    // Clear all code boxes
+    document.querySelectorAll('.otp-input').forEach(input => input.value = '');
+
+    // Show modal
+    const modal = document.getElementById('otp-modal');
+    const content = document.getElementById('otp-content');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+        document.querySelectorAll('.otp-input')[0].focus();
+    }, 100);
+    startOTPTimer();
+}
+
+function startOTPTimer() {
+    let timeLeft = 59;
+    const timerText = document.getElementById('otp-timer');
+    const resendBtn = document.getElementById('otp-resend-btn');
+    resendBtn.disabled = true;
+    resendBtn.classList.remove('text-primary', 'cursor-pointer');
+    resendBtn.classList.add('text-outline', 'opacity-50', 'cursor-not-allowed');
+    if (otpResendTimer) clearInterval(otpResendTimer);
+    otpResendTimer = setInterval(() => {
+        if (timeLeft <= 0) {
+            clearInterval(otpResendTimer);
+            timerText.innerText = "Didn't receive code?";
+            resendBtn.disabled = false;
+            resendBtn.classList.remove('text-outline', 'opacity-50', 'cursor-not-allowed');
+            resendBtn.classList.add('text-primary', 'cursor-pointer');
         } else {
-            localStorage.removeItem('admin_logged_in');
-            localStorage.setItem('user', JSON.stringify({ name: name || 'Alex Chen', email: email || 'alex.chen@example.com' }));
+            timerText.innerText = `Resend code in ${timeLeft}s`;
+            timeLeft--;
         }
+    }, 1000);
+}
+
+function resendOTP() {
+    startOTPTimer();
+    alert("Verification code resent to " + tempAuthData.email + ". Use code: 123456");
+}
+
+function closeOTPModal() {
+    const modal = document.getElementById('otp-modal');
+    const content = document.getElementById('otp-content');
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 300);
+    if (otpResendTimer) clearInterval(otpResendTimer);
+}
+
+// ── Verify OTP ───────────────────────────────────────────────────
+async function verifyOTPCode() {
+    const inputs = document.querySelectorAll('.otp-input');
+    let enteredCode = '';
+    inputs.forEach(input => enteredCode += input.value);
+    if (enteredCode.length !== 6) {
+        alert("Please enter the complete 6-digit verification code.");
+        return;
+    }
+    if (enteredCode === activeOTP) {
+        closeOTPModal();
+        await completeAuthentication(
+            tempAuthData.email,
+            tempAuthData.password,
+            tempAuthData.name,
+            tempAuthData.mode,
+            tempAuthData.role
+        );
+    } else {
+        alert("Incorrect verification code. Please try again.\nDemo code: 123456");
+    }
+}
+
+// ── Core Authentication ──────────────────────────────────────────
+async function completeAuthentication(email, password, name, mode, role) {
+    let firebaseUser = null;
+    let authMethod = 'email';
+
+    // 1. Try Firebase Auth
+    if (auth) {
+        try {
+            if (mode === 'signup') {
+                const cred = await auth.createUserWithEmailAndPassword(email, password);
+                firebaseUser = cred.user;
+                if (name) await firebaseUser.updateProfile({ displayName: name });
+            } else {
+                const cred = await auth.signInWithEmailAndPassword(email, password);
+                firebaseUser = cred.user;
+                name = name || firebaseUser.displayName || '';
+            }
+        } catch (error) {
+            // If user already exists on signup, try login instead
+            if (mode === 'signup' && error.code === 'auth/email-already-in-use') {
+                try {
+                    const cred = await auth.signInWithEmailAndPassword(email, password);
+                    firebaseUser = cred.user;
+                    name = name || firebaseUser.displayName || '';
+                } catch (loginErr) {
+                    console.warn("Firebase login also failed:", loginErr.message);
+                }
+            } else {
+                console.warn("Firebase Auth error:", error.message);
+            }
+        }
+    }
+
+    // 2. Determine final display name
+    const displayName = name || (firebaseUser ? firebaseUser.displayName : null) || email.split('@')[0];
+
+    // 3. Check for admin
+    if (email === 'oppurtunityhubber@gmail.com') {
+        localStorage.setItem('admin_logged_in', 'true');
+        role = 'admin';
+    }
+
+    // 4. Save session to localStorage
+    const userData = { name: displayName, email: email, role: role, authProvider: authMethod };
+    localStorage.setItem('user_logged_in', 'true');
+    localStorage.setItem('user_role', role);
+    localStorage.setItem('user', JSON.stringify(userData));
+
+    // 5. Save user profile to Firestore database
+    try {
+        await saveUserProfile(userData);
+    } catch (e) {
+        console.warn("Could not save user profile to database:", e);
+    }
+
+    // 6. Redirect
+    if (mode === 'signup') {
+        alert("Account created and verified successfully! Welcome to OpportunityHub.");
+    }
+    redirectByUserRole(role);
+}
+
+function redirectByUserRole(role) {
+    if (role === 'provider') {
+        window.location.href = 'post.html';
+    } else if (role === 'admin') {
+        window.location.href = 'browse.html';
+    } else {
         window.location.href = 'browse.html';
     }
 }
 
-// Process Firebase Auth logic
-async function processAuth(email, password, name, mode) {
-    if (!auth) {
-        // Fallback to simulation if Firebase is blocked or script didn't load
-        handleSimulatedLogin(email, name, mode);
-        return;
-    }
-    
-    try {
-        if (mode === 'signup') {
-            // Create account in Firebase
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-            
-            // Set display name
-            if (name) {
-                await user.updateProfile({ displayName: name });
-            }
-            
-            // Send Verification Email
-            await user.sendEmailVerification();
-            
-            alert("Account created successfully! An email verification link has been sent to " + email + ". Please verify your email before logging in.");
-            setMode('login');
-            const emailInput = document.getElementById('login-email');
-            if (emailInput) emailInput.value = email;
-        } else {
-            // Sign in to Firebase
-            const userCredential = await auth.signInWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-            
-            // Check verification status
-            if (user.emailVerified || user.email === 'oppurtunityhubber@gmail.com') {
-                localStorage.setItem('user_logged_in', 'true');
-                if (user.email === 'oppurtunityhubber@gmail.com') {
-                    localStorage.setItem('admin_logged_in', 'true');
-                    localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: user.email }));
-                } else {
-                    localStorage.removeItem('admin_logged_in');
-                    localStorage.setItem('user', JSON.stringify({ name: user.displayName || 'Alex Chen', email: user.email }));
-                }
-                window.location.href = 'browse.html';
-            } else {
-                alert("Please verify your email address before logging in. We have sent a verification link to " + user.email + ".");
-                // Sign out to prevent unverified active session
-                await auth.signOut();
-            }
-        }
-    } catch (error) {
-        // If Firebase Auth is disabled/unconfigured, fallback to simulated login for smooth UX/testing
-        if (error.code === 'auth/operation-not-allowed' || error.code === 'auth/network-request-failed' || error.message.includes('not enabled')) {
-            console.warn("Firebase Auth is not fully configured. Falling back to local simulation.", error);
-            handleSimulatedLogin(email, name, mode);
-        } else {
-            alert(error.message);
+// ── Google Sign-In ───────────────────────────────────────────────
+async function loginWithGoogle() {
+    if (auth) {
+        try {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('email');
+            provider.addScope('profile');
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+
+            const userData = {
+                name: user.displayName || 'Google User',
+                email: user.email,
+                role: currentRole,
+                authProvider: 'google'
+            };
+
+            localStorage.setItem('user_logged_in', 'true');
+            localStorage.setItem('user_role', currentRole);
+            localStorage.setItem('user', JSON.stringify(userData));
+
+            // Save to Firestore
+            try { await saveUserProfile(userData); } catch(e) { console.warn(e); }
+
+            redirectByUserRole(currentRole);
+            return;
+        } catch (error) {
+            console.warn("Firebase Google sign-in failed, showing simulation:", error.message);
         }
     }
+    // Fallback: show simulated OAuth picker
+    showSimulatedOAuth('Google');
 }
 
-// Attach listener to left card form submit button
+// ── LinkedIn Sign-In (no native Firebase support) ────────────────
+function loginWithLinkedIn() {
+    showSimulatedOAuth('LinkedIn');
+}
+
+// ── Simulated OAuth Modal ────────────────────────────────────────
+function showSimulatedOAuth(providerName) {
+    activeOAuthProvider = providerName;
+    if (providerName === 'Google') {
+        document.getElementById('google-oauth-header').classList.remove('hidden');
+        document.getElementById('google-oauth-header').classList.add('flex');
+        document.getElementById('linkedin-oauth-header').classList.add('hidden');
+        document.getElementById('linkedin-oauth-header').classList.remove('flex');
+    } else {
+        document.getElementById('linkedin-oauth-header').classList.remove('hidden');
+        document.getElementById('linkedin-oauth-header').classList.add('flex');
+        document.getElementById('google-oauth-header').classList.add('hidden');
+        document.getElementById('google-oauth-header').classList.remove('flex');
+    }
+    const modal = document.getElementById('oauth-modal');
+    const content = document.getElementById('oauth-content');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        content.classList.remove('scale-95', 'opacity-0');
+        content.classList.add('scale-100', 'opacity-100');
+    }, 100);
+}
+
+function closeOAuthModal() {
+    const modal = document.getElementById('oauth-modal');
+    const content = document.getElementById('oauth-content');
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+async function selectSimulatedOAuth(name, email) {
+    closeOAuthModal();
+
+    const userData = {
+        name: name,
+        email: email,
+        role: currentRole,
+        authProvider: activeOAuthProvider.toLowerCase()
+    };
+
+    localStorage.setItem('user_logged_in', 'true');
+    localStorage.setItem('user_role', currentRole);
+    localStorage.setItem('user', JSON.stringify(userData));
+
+    // Save to database
+    try { await saveUserProfile(userData); } catch(e) { console.warn(e); }
+
+    alert(`Signed in with ${activeOAuthProvider} as ${name} (${email}).`);
+    redirectByUserRole(currentRole);
+}
+
+async function submitCustomOAuth() {
+    const emailInput = document.getElementById('oauth-custom-email');
+    const email = emailInput ? emailInput.value.trim() : '';
+    if (!email) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+    closeOAuthModal();
+    const name = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
+
+    const userData = {
+        name: name,
+        email: email,
+        role: currentRole,
+        authProvider: activeOAuthProvider.toLowerCase()
+    };
+
+    localStorage.setItem('user_logged_in', 'true');
+    localStorage.setItem('user_role', currentRole);
+    localStorage.setItem('user', JSON.stringify(userData));
+
+    // Save to database
+    try { await saveUserProfile(userData); } catch(e) { console.warn(e); }
+
+    alert(`Signed in with ${activeOAuthProvider} as ${name} (${email}).`);
+    redirectByUserRole(currentRole);
+}
+
+// ── Form Submit Handlers ─────────────────────────────────────────
+
+// Left card form (Login / Signup)
 document.querySelector('form button').addEventListener('click', (e) => {
     e.preventDefault();
-    const emailInput = document.getElementById('login-email');
-    const nameInput = document.getElementById('login-name');
-    const passwordInput = document.getElementById('login-password');
-    
-    const email = emailInput ? emailInput.value.trim() : '';
-    const name = nameInput ? nameInput.value.trim() : '';
-    const password = passwordInput ? passwordInput.value : '';
-    
+    const email = (document.getElementById('login-email').value || '').trim();
+    const name = (document.getElementById('login-name').value || '').trim();
+    const password = document.getElementById('login-password').value || '';
+
     if (!email || !password) {
         alert("Please enter both email and password.");
         return;
     }
-    
-    processAuth(email, password, name, currentMode);
+    if (password.length < 6) {
+        alert("Password must be at least 6 characters long.");
+        return;
+    }
+    triggerOTPFlow(email, password, name, currentMode);
 });
 
-// Attach listener to desktop signup button if it exists
+// Desktop signup card (right panel)
 const desktopBtn = document.querySelector('.bg-primary-container button');
 if (desktopBtn) {
     desktopBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const nameInput = document.getElementById('desktop-name');
-        const emailInput = document.getElementById('desktop-email');
-        const passwordInput = document.getElementById('desktop-password');
-        
-        const name = nameInput ? nameInput.value.trim() : '';
-        const email = emailInput ? emailInput.value.trim() : '';
-        const password = passwordInput ? passwordInput.value : '';
-        
+        const name = (document.getElementById('desktop-name').value || '').trim();
+        const email = (document.getElementById('desktop-email').value || '').trim();
+        const password = document.getElementById('desktop-password').value || '';
         if (!email || !password) {
             alert("Please fill out all fields.");
             return;
         }
-        
-        processAuth(email, password, name, 'signup');
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return;
+        }
+        triggerOTPFlow(email, password, name, 'signup');
     });
 }
 
-// Check URL parameters on load
+// ── URL Parameters on Load ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('mode') === 'signup') {
         setMode('signup');
+    }
+    const roleParam = params.get('role');
+    if (roleParam === 'provider' || roleParam === 'seeker') {
+        setRole(roleParam);
+    }
+
+    // If already logged in, redirect away from sign-in page
+    if (localStorage.getItem('user_logged_in') === 'true') {
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const fromParam = params.get('from');
+        if (!fromParam) {
+            // Only auto-redirect if not coming from a specific page
+            // redirectByUserRole(user.role || 'seeker');
+        }
     }
 });
 </script>

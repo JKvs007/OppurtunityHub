@@ -180,6 +180,15 @@ async function deleteOpportunity(id) {
 
 // Add a new opportunity (recruiter action)
 async function addOpportunity(opp) {
+    // Ensure publisherEmail is associated with the opportunity
+    if (!opp.publisherEmail) {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            opp.publisherEmail = user.email || 'anonymous';
+        } catch (e) {
+            opp.publisherEmail = 'anonymous';
+        }
+    }
     const working = await isFirestoreWorking();
     if (working) {
         try {
@@ -197,3 +206,72 @@ async function addOpportunity(opp) {
     localStorage.setItem('local_opportunities', JSON.stringify(localList));
     return true;
 }
+
+// ── User Profile Management ──────────────────────────────────────
+
+// Save user profile to Firestore (or localStorage fallback)
+async function saveUserProfile(userData) {
+    const profileData = {
+        name: userData.name || '',
+        email: userData.email || '',
+        role: userData.role || 'seeker',
+        authProvider: userData.authProvider || 'email',
+        lastLogin: new Date().toISOString()
+    };
+
+    const working = await isFirestoreWorking();
+    if (working) {
+        try {
+            // Use email as document ID (replace dots/@ for safe doc IDs)
+            const docId = userData.email.replace(/[.@]/g, '_');
+            const docRef = db.collection('users').doc(docId);
+            const existing = await docRef.get();
+            if (existing.exists) {
+                // Merge: keep createdAt, update lastLogin
+                await docRef.update({
+                    name: profileData.name,
+                    role: profileData.role,
+                    authProvider: profileData.authProvider,
+                    lastLogin: profileData.lastLogin
+                });
+            } else {
+                profileData.createdAt = new Date().toISOString();
+                await docRef.set(profileData);
+            }
+            console.log(`User profile saved to Firestore for ${userData.email}`);
+            return true;
+        } catch (e) {
+            console.error("Error saving user profile to Firestore:", e);
+        }
+    }
+
+    // LocalStorage fallback
+    let users = JSON.parse(localStorage.getItem('local_users') || '{}');
+    if (!users[userData.email]) {
+        profileData.createdAt = new Date().toISOString();
+    }
+    users[userData.email] = { ...users[userData.email], ...profileData };
+    localStorage.setItem('local_users', JSON.stringify(users));
+    return true;
+}
+
+// Get user profile from Firestore (or localStorage fallback)
+async function getUserProfile(email) {
+    const working = await isFirestoreWorking();
+    if (working) {
+        try {
+            const docId = email.replace(/[.@]/g, '_');
+            const doc = await db.collection('users').doc(docId).get();
+            if (doc.exists) {
+                return doc.data();
+            }
+        } catch (e) {
+            console.error("Error getting user profile from Firestore:", e);
+        }
+    }
+
+    // LocalStorage fallback
+    let users = JSON.parse(localStorage.getItem('local_users') || '{}');
+    return users[email] || null;
+}
+

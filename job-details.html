@@ -169,17 +169,17 @@
 <div class="flex flex-col sm:flex-row gap-sm sm:gap-md items-start">
 <!-- Company Logo -->
 <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border border-outline-variant/30 bg-surface-container-lowest p-2 shadow-sm shrink-0 flex items-center justify-center overflow-hidden">
-<img alt="Professional company logo for TCS. Minimalist, geometric, indigo colors, white background." class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ISoaFO0qW6Rd1BjboQ2IACosLCe2OOTFf7M_BD2OC7b8PA1jkClwWZQEArAC2XT3ZJ16EAaQF8q8Qd9GPZtTaIWt0a-xsFuxa1iT5fUqydDAeJwlwmu7jkcn67vG_Bv91Ou6qMqOFr9Ye711AN4q66r8s7dzcceai6GEXBToF2fv13pRnY6YCVc28h69dq9PUsxQMqni8UkkgLXtBzaCZeOJASiouIf031qwZpC5q-K6tIz5F2D3rs6zAk466yuAy13zdWe2TA0"/>
+<img id="job-logo" alt="Company Logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ISoaFO0qW6Rd1BjboQ2IACosLCe2OOTFf7M_BD2OC7b8PA1jkClwWZQEArAC2XT3ZJ16EAaQF8q8Qd9GPZtTaIWt0a-xsFuxa1iT5fUqydDAeJwlwmu7jkcn67vG_Bv91Ou6qMqOFr9Ye711AN4q66r8s7dzcceai6GEXBToF2fv13pRnY6YCVc28h69dq9PUsxQMqni8UkkgLXtBzaCZeOJASiouIf031qwZpC5q-K6tIz5F2D3rs6zAk466yuAy13zdWe2TA0"/>
 </div>
 <div class="flex flex-col space-y-2">
-<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Senior Product Designer</h1>
+<h1 id="job-title" class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Senior Product Designer</h1>
 <div class="flex items-center space-x-2 text-on-surface-variant font-body-lg text-body-lg">
-<span class="font-semibold text-primary">TCS</span>
+<span id="job-company" class="font-semibold text-primary">TCS</span>
 <span class="text-outline-variant">•</span>
-<span class="flex items-center"><span class="material-symbols-outlined text-[18px] mr-1">location_on</span>Thiruvananthapuram, Kerala</span>
+<span class="flex items-center"><span class="material-symbols-outlined text-[18px] mr-1">location_on</span><span id="job-location">Thiruvananthapuram, Kerala</span></span>
 </div>
 <!-- Tags -->
-<div class="flex flex-wrap gap-2 mt-xs">
+<div id="job-tags" class="flex flex-wrap gap-2 mt-xs">
 <span class="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm border border-tertiary-fixed-dim/50">AI/ML</span>
 <span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm border border-secondary-fixed-dim/50">Hybrid</span>
 <span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm border border-outline-variant/30">Full-time</span>
@@ -198,48 +198,34 @@
 <!-- Info Bar (Glassmorphism card) -->
 <section class="grid grid-cols-2 md:grid-cols-4 gap-4 p-md rounded-2xl border border-outline-variant/30 bg-surface-container-lowest soft-shadow">
 <div class="flex flex-col space-y-1">
-<span class="text-outline font-label-sm text-label-sm uppercase tracking-wider flex items-center"><span class="material-symbols-outlined text-[16px] mr-1">payments</span> Stipend</span>
-<span class="font-body-lg text-body-lg font-semibold text-on-surface">₹1.5L/mo</span>
+<span class="text-outline font-label-sm text-label-sm uppercase tracking-wider flex items-center"><span class="material-symbols-outlined text-[16px] mr-1">payments</span> Stipend / Salary</span>
+<span id="job-salary" class="font-body-lg text-body-lg font-semibold text-on-surface">₹1.5L/mo</span>
 </div>
 <div class="flex flex-col space-y-1 border-l border-outline-variant/20 pl-4">
-<span class="text-outline font-label-sm text-label-sm uppercase tracking-wider flex items-center"><span class="material-symbols-outlined text-[16px] mr-1">calendar_today</span> Deadline</span>
-<span class="font-body-lg text-body-lg font-semibold text-on-surface">Sept 30</span>
+<span class="text-outline font-label-sm text-label-sm uppercase tracking-wider flex items-center"><span class="material-symbols-outlined text-[16px] mr-1">calendar_today</span> Deadline / Status</span>
+<span id="job-deadline" class="font-body-lg text-body-lg font-semibold text-on-surface">Sept 30</span>
 </div>
 <div class="flex flex-col space-y-1 border-t md:border-t-0 md:border-l border-outline-variant/20 pt-4 md:pt-0 pl-0 md:pl-4 col-span-2 md:col-span-2">
 <span class="text-outline font-label-sm text-label-sm uppercase tracking-wider flex items-center"><span class="material-symbols-outlined text-[16px] mr-1">business</span> Work Setup</span>
-<span class="font-body-lg text-body-lg font-semibold text-on-surface">Hybrid (3 days on-site)</span>
+<span id="job-setup" class="font-body-lg text-body-lg font-semibold text-on-surface">Hybrid (3 days on-site)</span>
 </div>
 </section>
 <!-- Description -->
 <section class="flex flex-col space-y-md">
 <h2 class="font-headline-md text-headline-md text-on-surface border-b border-outline-variant/30 pb-xs">About the Role</h2>
-<div class="prose max-w-none text-on-surface-variant font-body-md text-body-md space-y-4">
+<div id="job-description-content" class="prose max-w-none text-on-surface-variant font-body-md text-body-md space-y-4">
 <p>TCS is seeking a visionary Senior Product Designer to help shape the future of artificial intelligence interfaces. You will be responsible for translating complex ML capabilities into intuitive, elegant user experiences that empower our users.</p>
-<h3 class="font-bold text-on-surface mt-6 mb-2">Key Responsibilities:</h3>
-<ul class="list-disc pl-5 space-y-2">
-<li>Lead end-to-end design initiatives for core AI-driven features.</li>
-<li>Collaborate closely with engineering and product management to define product vision.</li>
-<li>Develop and maintain our emerging design system, ensuring consistency across all touchpoints.</li>
-<li>Conduct user research and usability testing to validate design decisions.</li>
-</ul>
-<h3 class="font-bold text-on-surface mt-6 mb-2">Requirements:</h3>
-<ul class="list-disc pl-5 space-y-2">
-<li>5+ years of experience in product design, ideally within B2B SaaS or technical tools.</li>
-<li>Strong portfolio demonstrating systemic thinking and complex problem-solving.</li>
-<li>Proficiency in Figma, prototyping tools, and a solid understanding of front-end constraints.</li>
-<li>Experience or strong interest in AI/ML technologies is highly preferred.</li>
-</ul>
 </div>
 </section>
 <!-- Map Location Section -->
 <section class="flex flex-col space-y-md">
 <div class="flex items-center justify-between border-b border-outline-variant/30 pb-xs">
 <h2 class="font-headline-md text-headline-md text-on-surface">Location</h2>
-<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-1 rounded text-xs font-semibold">Hybrid Role</span>
+<span id="job-setup-badge" class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-1 rounded text-xs font-semibold">Hybrid Role</span>
 </div>
 <div class="relative w-full h-[300px] rounded-[16px] overflow-hidden border border-outline-variant/30 soft-shadow group">
 <!-- Map Placeholder Image -->
-<img alt="A high-altitude, stylized map view of the Thiruvananthapuram Technopark Area. The visual style is modern and clean, utilizing a light mode palette with subtle indigo and slate tones for landmasses. The cartography is simplified, highlighting major thoroughfares with soft glowing lines, evoking a tech-forward, premium corporate aesthetic." class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A high-altitude, stylized map view of the Thiruvananthapuram Technopark Area. The visual style is modern and clean, utilizing a light mode palette with subtle indigo and slate tones for landmasses. The cartography is simplified, highlighting major thoroughfares with soft glowing lines, evoking a tech-forward, premium corporate aesthetic." data-location="Thiruvananthapuram, Kerala" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGaJoc7Dn7QF4eMuLw1H1P21iTRPzilIsclCjI8u4n8HOveR01ajnQoDfy0oXk828VCjdFm_Yu16hQ7apKB4KxXeAnyBcHeTzUTprkmbbcVvY5r54bbEUS5vh9cGcPtLDOZ0vKU9wkF9pytgE3tyEFDy8E7nFHCk4Nx2WiGXSo5cfSZ1qJrP1WHFEDYiIx3USmISAXCf_p6MFtc4biTjtp7fOmxcywh0DfkYsApsoPoUAwhprAYDyNpQdcsd0nHqnTCrc6axP0udM"/>
+<img id="job-map-image" alt="Map View" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGaJoc7Dn7QF4eMuLw1H1P21iTRPzilIsclCjI8u4n8HOveR01ajnQoDfy0oXk828VCjdFm_Yu16hQ7apKB4KxXeAnyBcHeTzUTprkmbbcVvY5r54bbEUS5vh9cGcPtLDOZ0vKU9wkF9pytgE3tyEFDy8E7nFHCk4Nx2WiGXSo5cfSZ1qJrP1WHFEDYiIx3USmISAXCf_p6MFtc4biTjtp7fOmxcywh0DfkYsApsoPoUAwhprAYDyNpQdcsd0nHqnTCrc6axP0udM"/>
 <!-- Glassmorphic Overlay Controls -->
 <div class="absolute top-4 right-4 flex flex-col space-y-2">
 <button class="w-10 h-10 glass-panel rounded-lg border border-white/50 flex items-center justify-center text-on-surface hover:text-primary transition-colors shadow-sm">
@@ -255,15 +241,15 @@
 <div class="w-2 h-2 bg-white rounded-full"></div>
 </div>
 <div class="glass-panel px-4 py-2 rounded-lg border border-white/50 shadow-md text-center">
-<p class="font-label-sm text-label-sm font-bold text-on-surface">TCS Technopark HQ</p>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Phase III, Technopark</p>
+<p id="job-pin-title" class="font-label-sm text-label-sm font-bold text-on-surface">Technopark HQ</p>
+<p id="job-pin-subtitle" class="font-body-sm text-body-sm text-on-surface-variant">Office Address</p>
 </div>
 </div>
 </div>
 <div class="flex items-center justify-between bg-surface-container-lowest p-sm rounded-lg border border-outline-variant/30">
 <div class="flex items-center space-x-sm text-on-surface-variant">
 <span class="material-symbols-outlined text-primary">directions_walk</span>
-<span class="font-body-sm text-body-sm">Technopark Phase III, Thiruvananthapuram, Kerala 695581</span>
+<span id="job-address" class="font-body-sm text-body-sm">Technopark Phase III, Thiruvananthapuram, Kerala 695581</span>
 </div>
 <button class="text-primary hover:text-primary-container font-label-md text-label-md transition-colors flex items-center">
                         Get Directions
@@ -390,7 +376,11 @@
             Back to Opportunity
         </button>
     </div>
-</div>
+</div><!-- Load Firebase SDK and initialization script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-db.js"></script>
 
 <script>
 function openApplyModal() {
@@ -421,6 +411,203 @@ function copyShareLink() {
     navigator.clipboard.writeText(window.location.href).then(() => {
         alert("Opportunity link copied to clipboard!");
     });
+}
+
+// Load the opportunity data dynamically based on query parameter `id`
+document.addEventListener('DOMContentLoaded', async () => {
+    updateGlobalNavigation();
+    
+    // Fetch opportunities list
+    const oppList = await getOpportunities();
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id') || '3'; // fallback to TCS Machine Learning role if no id provided
+    
+    const opp = oppList.find(o => o.id === id) || oppList.find(o => o.id === '3') || oppList[0];
+    
+    if (opp) {
+        // Update browser/tab title
+        document.title = `${opp.title} - ${opp.company} | OpportunityHub`;
+        
+        // Update DOM elements
+        const logo = document.getElementById('job-logo');
+        if (logo) {
+            logo.src = opp.logo;
+            logo.alt = `${opp.company} Logo`;
+        }
+        
+        const title = document.getElementById('job-title');
+        if (title) title.innerText = opp.title;
+        
+        const company = document.getElementById('job-company');
+        if (company) company.innerText = opp.company;
+        
+        const loc = document.getElementById('job-location');
+        if (loc) loc.innerText = opp.locationText || (opp.location === 'remote' ? 'Remote' : opp.location);
+        
+        const salary = document.getElementById('job-salary');
+        if (salary) salary.innerText = opp.salary || 'Unpaid / Academic Credit';
+        
+        const deadline = document.getElementById('job-deadline');
+        if (deadline) deadline.innerText = opp.closes || 'Open / No deadline';
+        
+        const setup = document.getElementById('job-setup');
+        if (setup) {
+            setup.innerText = `${opp.mode.charAt(0).toUpperCase() + opp.mode.slice(1)} Setup`;
+        }
+        
+        const setupBadge = document.getElementById('job-setup-badge');
+        if (setupBadge) {
+            setupBadge.innerText = `${opp.mode.charAt(0).toUpperCase() + opp.mode.slice(1)} Role`;
+        }
+        
+        const descContent = document.getElementById('job-description-content');
+        if (descContent) {
+            const lines = opp.description.split('\n');
+            descContent.innerHTML = lines.map(line => `<p class="mb-sm">${line.trim()}</p>`).join('');
+        }
+        
+        const pinTitle = document.getElementById('job-pin-title');
+        if (pinTitle) pinTitle.innerText = `${opp.company} Office`;
+        
+        const address = document.getElementById('job-address');
+        if (address) {
+            address.innerText = opp.location === 'remote' ? 'Remote (Work from Anywhere)' : (opp.locationText || 'India Office');
+        }
+        
+        // Update success modal text
+        const successModalText = document.querySelector('#apply-success-modal p');
+        if (successModalText) {
+            successModalText.innerText = `Your application for the ${opp.title} role at ${opp.company} has been successfully sent to recruiters.`;
+        }
+
+        // Render dynamic tags
+        const tagsContainer = document.getElementById('job-tags');
+        if (tagsContainer) {
+            tagsContainer.innerHTML = `
+                <span class="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm border border-tertiary-fixed-dim/50 capitalize">${opp.category}</span>
+                <span class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm border border-secondary-fixed-dim/50 capitalize">${opp.mode}</span>
+                ${opp.salary ? `<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm border border-outline-variant/30">${opp.salary}</span>` : ''}
+            `;
+        }
+    }
+});
+
+function updateGlobalNavigation() {
+    const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const role = currentUser.role || 'seeker';
+
+    // 1. Update Navigation Links
+    const navLinks = document.querySelectorAll('nav a, header nav a');
+    navLinks.forEach(link => {
+        const text = link.textContent.trim();
+        if (text === 'My Applications' || text === 'Manage Listings' || text === 'Recruiter Dashboard') {
+            if (isLoggedIn && role === 'provider') {
+                link.textContent = 'Manage Listings';
+                link.href = 'browse.html?filter=mylistings';
+            } else {
+                link.textContent = 'My Applications';
+                link.href = isLoggedIn ? 'browse.html?filter=applications' : 'signin.html';
+            }
+        }
+    });
+
+    // 2. Show Post Internship Link for Providers in Desktop Nav
+    const navContainers = document.querySelectorAll('nav.hidden.md\\:flex, header nav.hidden.md\\:flex');
+    navContainers.forEach(container => {
+        if (isLoggedIn && role === 'provider') {
+            let hasPostLink = false;
+            container.querySelectorAll('a').forEach(a => {
+                if (a.href.includes('post.html')) hasPostLink = true;
+            });
+            if (!hasPostLink) {
+                const postLink = document.createElement('a');
+                postLink.className = "text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors px-sm py-xs hover:bg-surface-container-high/50 rounded-lg transition-all active:scale-95 duration-200 font-label-md text-label-md";
+                postLink.textContent = 'Post Internship';
+                postLink.href = 'post.html';
+                container.appendChild(postLink);
+            }
+        }
+    });
+
+    // 3. Setup Dropdown profile
+    const profileLinks = document.querySelectorAll('a[href="signin.html"]');
+    profileLinks.forEach(profileLink => {
+        const img = profileLink.querySelector('img');
+        if (!img) return;
+
+        if (!isLoggedIn) return;
+
+        profileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleProfileDropdown(profileLink);
+        });
+
+        const parent = profileLink.parentElement;
+        if (parent) {
+            parent.style.position = 'relative';
+            let dropdown = parent.querySelector('#profile-dropdown-menu');
+            if (!dropdown) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'profile-dropdown-menu';
+                dropdown.className = 'hidden absolute right-0 top-12 w-64 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-xl p-md z-[100] flex flex-col gap-sm text-left';
+                dropdown.innerHTML = `
+                    <div class="border-b border-outline-variant/20 pb-sm mb-xs">
+                        <p class="font-label-md text-label-md text-on-surface font-bold truncate">${currentUser.name || 'User'}</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${currentUser.email || ''}</p>
+                        <span class="inline-block mt-xs bg-primary/10 text-primary font-label-sm text-[11px] px-2 py-0.5 rounded-full capitalize">
+                            ${role === 'provider' ? 'Internship Provider' : 'Internship Seeker'}
+                        </span>
+                    </div>
+                    ${role === 'provider' ? `
+                        <a href="post.html" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">add_circle</span> Post Internship
+                        </a>
+                        <a href="browse.html?filter=mylistings" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">work</span> Manage My Listings
+                        </a>
+                    ` : `
+                        <a href="browse.html?filter=bookmarks" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">bookmark</span> Saved Opportunities
+                        </a>
+                    `}
+                    <button onclick="handleGlobalSignOut()" class="w-full mt-xs flex items-center gap-xs p-2 rounded-lg hover:bg-error/10 text-error transition-colors font-label-md text-label-md text-left">
+                        <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+                    </button>
+                `;
+                parent.appendChild(dropdown);
+            }
+        }
+    });
+
+    document.addEventListener('click', () => {
+        const dropdowns = document.querySelectorAll('#profile-dropdown-menu');
+        dropdowns.forEach(d => d.classList.add('hidden'));
+    });
+}
+
+function toggleProfileDropdown(profileLink) {
+    const parent = profileLink.parentElement;
+    if (parent) {
+        const dropdown = parent.querySelector('#profile-dropdown-menu');
+        if (dropdown) {
+            const isHidden = dropdown.classList.contains('hidden');
+            document.querySelectorAll('#profile-dropdown-menu').forEach(d => d.classList.add('hidden'));
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+            }
+        }
+    }
+}
+
+function handleGlobalSignOut() {
+    localStorage.removeItem('user_logged_in');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('user');
+    localStorage.removeItem('admin_logged_in');
+    alert("Signed out successfully.");
+    window.location.href = 'index.html';
 }
 </script>
 </body></html>

@@ -161,8 +161,11 @@
 </a>
 <h1 class="font-headline-md text-headline-md font-semibold text-on-surface">Post an Opportunity</h1>
 </div>
-<div>
-<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-3 py-1 rounded-full">Draft Saved 2m ago</span>
+<div class="flex items-center gap-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-3 py-1 rounded-full hidden sm:inline-block">Draft Saved 2m ago</span>
+<a href="signin.html" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant hover:border-primary transition-all active:scale-95 duration-200 block">
+<img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArSpbZlU6C_9qRNKA8v8YAnoYLhyXVxLjUQSlX6Xah2E-NpdUl19cGkrxMEB3y25tM1aRyh78efEf1kACgetd3WjN9_IxhHrqK1X31_3ChewcQzE3NMtEGrWELzzNtF5Ua14FcUgEjtPVzl826LHoCJo58UOjwsle1KXdg1p8i3rbNLPR5H404dTfKmMAdDyv4R06rcWJq_6eyvVBL86BBQHEH_8sL8tLkPLwSAXtKKUllP4mLvbw5TG_FASu95YV_TIkn8589ABo"/>
+</a>
 </div>
 </header>
 <main class="max-w-[840px] mx-auto pt-lg px-margin-mobile md:px-margin-desktop">
@@ -344,6 +347,39 @@
 <script>
         let currentWorkMode = 'hybrid';
 
+        // Check recruiter authentication and role
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+            const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+            const role = currentUser.role || 'seeker';
+
+            if (!isLoggedIn) {
+                alert("Please log in as an Internship Provider to post opportunities.");
+                window.location.href = "signin.html?role=provider";
+                return;
+            }
+
+            if (role !== 'provider' && localStorage.getItem('admin_logged_in') !== 'true') {
+                if (confirm("Posting opportunities is restricted to Internship Provider accounts. Would you like to switch your account to an Internship Provider?")) {
+                    currentUser.role = 'provider';
+                    localStorage.setItem('user_role', 'provider');
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    window.location.reload();
+                } else {
+                    window.location.href = "index.html";
+                }
+                return;
+            }
+
+            // Prepopulate company field
+            const companyInput = document.getElementById('opp-company');
+            if (companyInput && currentUser.name) {
+                companyInput.value = (currentUser.name.includes('Alex') || currentUser.name.includes('User')) ? 'My Tech Startup' : currentUser.name;
+            }
+
+            updateGlobalNavigation();
+        });
+
         // Simple logic to toggle map visibility based on work mode
         function setWorkMode(mode, btnElement) {
             currentWorkMode = mode;
@@ -393,6 +429,8 @@
             const description = document.getElementById('opp-description').value.trim();
             const compensation = document.querySelector('input[name="compensation"]:checked').value;
             
+            const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
             const newOpp = {
                 id: Math.random().toString(36).substr(2, 9),
                 title: title,
@@ -406,7 +444,8 @@
                 closes: deadline ? `Closes on ${deadline}` : '',
                 posted: 'Posted just now',
                 description: description || 'No details provided.',
-                logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTURm5-BAHhzUMp6j1FViotUolW2QXvoNsaxTr5wvVAVqnu5dh0f0l6UEdKcAw2Nfm5BG9IeEdU9z7KwJZ7WPIjmbWWsyLazMwWHStmBTXyC3yms4vTm0YDDtqmiOmQCW1Nmzb55t2FRGfpQiqjwni7QUMJ50L8JmXom1lHiuRCbfUryTgrORVN4-zEnjkpS6TtF6OK_LYZ5Im7kUpvW_mGs1FdILKX6F2SmKvMwqlwjxu8SjEir3pEL6gN2w8jHadRoelhiWuuo8'
+                logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTURm5-BAHhzUMp6j1FViotUolW2QXvoNsaxTr5wvVAVqnu5dh0f0l6UEdKcAw2Nfm5BG9IeEdU9z7KwJZ7WPIjmbWWsyLazMwWHStmBTXyC3yms4vTm0YDDtqmiOmQCW1Nmzb55t2FRGfpQiqjwni7QUMJ50L8JmXom1lHiuRCbfUryTgrORVN4-zEnjkpS6TtF6OK_LYZ5Im7kUpvW_mGs1FdILKX6F2SmKvMwqlwjxu8SjEir3pEL6gN2w8jHadRoelhiWuuo8',
+                publisherEmail: currentUser.email || 'anonymous'
             };
             
             await addOpportunity(newOpp);
@@ -421,7 +460,7 @@
             }, 10);
             
             setTimeout(() => {
-                window.location.href = 'browse.html';
+                window.location.href = 'browse.html?filter=mylistings';
             }, 2000);
         });
 
@@ -455,6 +494,107 @@
                     toastDesc.innerText = 'Your listing has been created successfully.';
                 }, 300);
             }, 2500);
+        }
+
+        // Dynamic Navigation and Profile Dropdown Logic
+        function updateGlobalNavigation() {
+            const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+            const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+            const role = currentUser.role || 'seeker';
+
+            // 1. Update Navigation Links
+            const navLinks = document.querySelectorAll('nav a, header nav a');
+            navLinks.forEach(link => {
+                const text = link.textContent.trim();
+                if (text === 'My Applications' || text === 'Manage Listings' || text === 'Recruiter Dashboard') {
+                    if (isLoggedIn && role === 'provider') {
+                        link.textContent = 'Manage Listings';
+                        link.href = 'browse.html?filter=mylistings';
+                    } else {
+                        link.textContent = 'My Applications';
+                        link.href = isLoggedIn ? 'browse.html?filter=applications' : 'signin.html';
+                    }
+                }
+            });
+
+            // 2. Setup Dropdown profile
+            const profileLinks = document.querySelectorAll('a[href="signin.html"]');
+            profileLinks.forEach(profileLink => {
+                const img = profileLink.querySelector('img');
+                if (!img) return;
+
+                if (!isLoggedIn) return;
+
+                profileLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleProfileDropdown(profileLink);
+                });
+
+                const parent = profileLink.parentElement;
+                if (parent) {
+                    parent.style.position = 'relative';
+                    let dropdown = parent.querySelector('#profile-dropdown-menu');
+                    if (!dropdown) {
+                        dropdown = document.createElement('div');
+                        dropdown.id = 'profile-dropdown-menu';
+                        dropdown.className = 'hidden absolute right-0 top-12 w-64 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-xl p-md z-[100] flex flex-col gap-sm text-left';
+                        dropdown.innerHTML = `
+                            <div class="border-b border-outline-variant/20 pb-sm mb-xs">
+                                <p class="font-label-md text-label-md text-on-surface font-bold truncate">${currentUser.name || 'User'}</p>
+                                <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${currentUser.email || ''}</p>
+                                <span class="inline-block mt-xs bg-primary/10 text-primary font-label-sm text-[11px] px-2 py-0.5 rounded-full capitalize">
+                                    ${role === 'provider' ? 'Internship Provider' : 'Internship Seeker'}
+                                </span>
+                            </div>
+                            ${role === 'provider' ? `
+                                <a href="post.html" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                                    <span class="material-symbols-outlined text-[18px]">add_circle</span> Post Internship
+                                </a>
+                                <a href="browse.html?filter=mylistings" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                                    <span class="material-symbols-outlined text-[18px]">work</span> Manage My Listings
+                                </a>
+                            ` : `
+                                <a href="browse.html?filter=bookmarks" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                                    <span class="material-symbols-outlined text-[18px]">bookmark</span> Saved Opportunities
+                                </a>
+                            `}
+                            <button onclick="handleGlobalSignOut()" class="w-full mt-xs flex items-center gap-xs p-2 rounded-lg hover:bg-error/10 text-error transition-colors font-label-md text-label-md text-left">
+                                <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+                            </button>
+                        `;
+                        parent.appendChild(dropdown);
+                    }
+                }
+            });
+
+            document.addEventListener('click', () => {
+                const dropdowns = document.querySelectorAll('#profile-dropdown-menu');
+                dropdowns.forEach(d => d.classList.add('hidden'));
+            });
+        }
+
+        function toggleProfileDropdown(profileLink) {
+            const parent = profileLink.parentElement;
+            if (parent) {
+                const dropdown = parent.querySelector('#profile-dropdown-menu');
+                if (dropdown) {
+                    const isHidden = dropdown.classList.contains('hidden');
+                    document.querySelectorAll('#profile-dropdown-menu').forEach(d => d.classList.add('hidden'));
+                    if (isHidden) {
+                        dropdown.classList.remove('hidden');
+                    }
+                }
+            }
+        }
+
+        function handleGlobalSignOut() {
+            localStorage.removeItem('user_logged_in');
+            localStorage.removeItem('user_role');
+            localStorage.removeItem('user');
+            localStorage.removeItem('admin_logged_in');
+            alert("Signed out successfully.");
+            window.location.href = 'index.html';
         }
     </script>
 </body></html>

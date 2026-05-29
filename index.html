@@ -222,7 +222,7 @@
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
 <!-- Card 1 -->
-<div data-id="3" onclick="window.location.href='job-details.html'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
+<div data-id="3" onclick="window.location.href='job-details.html?id=3'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
 <div class="flex justify-between items-start mb-md">
 <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
 <img alt="TCS logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ISoaFO0qW6Rd1BjboQ2IACosLCe2OOTFf7M_BD2OC7b8PA1jkClwWZQEArAC2XT3ZJ16EAaQF8q8Qd9GPZtTaIWt0a-xsFuxa1iT5fUqydDAeJwlwmu7jkcn67vG_Bv91Ou6qMqOFr9Ye711AN4q66r8s7dzcceai6GEXBToF2fv13pRnY6YCVc28h69dq9PUsxQMqni8UkkgLXtBzaCZeOJASiouIf031qwZpC5q-K6tIz5F2D3rs6zAk466yuAy13zdWe2TA0"/>
@@ -248,7 +248,7 @@
 </div>
 </div>
 <!-- Card 2 -->
-<div data-id="4" onclick="window.location.href='job-details.html'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
+<div data-id="4" onclick="window.location.href='job-details.html?id=4'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
 <div class="flex justify-between items-start mb-md">
 <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
 <img alt="Infosys logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmKInZbH0yIKPcxyemOYzA2ZQTxdwxTDsbHPKIJMwgbL4mbXJuhrjpM3J2jKSmLFrjP61K-Csnpyr8Y_Ue9YSQxguATx6BhjJ5olSMTfaVumpuovC2Nsp-aA9SIzDmqSUCpyemH5A4V5N9eQaRwTEnztRkWE1DP9xsPU07nJjNXnwkcEnccD69Tcom4y9N0tbQbi2TdHDSNLTaTP7F-Da_ou13yuEMtpLKDh1LY1P5mwyQFvlFLzy_RHVcJsqc1_TJLbbw9xAXvFg"/>
@@ -274,7 +274,7 @@
 </div>
 </div>
 <!-- Card 3 -->
-<div data-id="5" onclick="window.location.href='job-details.html'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
+<div data-id="5" onclick="window.location.href='job-details.html?id=5'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
 <div class="flex justify-between items-start mb-md">
 <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
 <img alt="Wipro logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Bb6WXiYHVBVBP-vecpL4YbJAcOXmQNChbxL0GbV11xfvw_-zHR-AkmdLvSeWMv4oBXVN0Buj8UamnPPTGTCzXvbBtgXMZ1B4nWc0ZPvJP36CeX0CDrVwOSY4dopFWj6HcDBlL2vxXEGmhzt6GhLeKlmgrAyScWVnRf5Sqg9JJqt21B9uLi5LqR45oKSq5kuCa3vGNq6O6kZmnPVx2Pg9srP9JSa_HBSk_2s1hnSBMN5H1r5EcTfa2mvr8rozxy4dpCcnsWNy8gM"/>
@@ -430,7 +430,7 @@ function renderFeaturedOpportunities(list) {
     featured.forEach(opp => {
         const card = document.createElement('div');
         card.setAttribute('data-id', opp.id);
-        card.onclick = () => window.location.href = 'job-details.html';
+        card.onclick = () => window.location.href = `job-details.html?id=${opp.id}`;
         card.className = 'featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary';
         
         card.innerHTML = `
@@ -488,5 +488,128 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 });
+
+// Dynamic Navigation and Profile Dropdown Logic
+document.addEventListener('DOMContentLoaded', () => {
+    updateGlobalNavigation();
+});
+
+function updateGlobalNavigation() {
+    const isLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    const role = currentUser.role || 'seeker';
+
+    // 1. Update Navigation Links
+    const navLinks = document.querySelectorAll('nav a, header nav a');
+    navLinks.forEach(link => {
+        const text = link.textContent.trim();
+        if (text === 'My Applications' || text === 'Manage Listings' || text === 'Recruiter Dashboard') {
+            if (isLoggedIn && role === 'provider') {
+                link.textContent = 'Manage Listings';
+                link.href = 'browse.html?filter=mylistings';
+            } else {
+                link.textContent = 'My Applications';
+                link.href = isLoggedIn ? 'browse.html?filter=applications' : 'signin.html';
+            }
+        }
+    });
+
+    // 2. Show Post Internship Link for Providers in Desktop Nav
+    const navContainers = document.querySelectorAll('nav.hidden.md\\:flex, header nav.hidden.md\\:flex');
+    navContainers.forEach(container => {
+        if (isLoggedIn && role === 'provider') {
+            let hasPostLink = false;
+            container.querySelectorAll('a').forEach(a => {
+                if (a.href.includes('post.html')) hasPostLink = true;
+            });
+            if (!hasPostLink) {
+                const postLink = document.createElement('a');
+                postLink.className = "text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors px-sm py-xs hover:bg-surface-container-high/50 rounded-lg transition-all active:scale-95 duration-200 font-label-md text-label-md";
+                postLink.textContent = 'Post Internship';
+                postLink.href = 'post.html';
+                container.appendChild(postLink);
+            }
+        }
+    });
+
+    // 3. Setup Dropdown profile
+    const profileLinks = document.querySelectorAll('a[href="signin.html"]');
+    profileLinks.forEach(profileLink => {
+        const img = profileLink.querySelector('img');
+        if (!img) return;
+
+        if (!isLoggedIn) return;
+
+        profileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleProfileDropdown(profileLink);
+        });
+
+        const parent = profileLink.parentElement;
+        if (parent) {
+            parent.style.position = 'relative';
+            let dropdown = parent.querySelector('#profile-dropdown-menu');
+            if (!dropdown) {
+                dropdown = document.createElement('div');
+                dropdown.id = 'profile-dropdown-menu';
+                dropdown.className = 'hidden absolute right-0 top-12 w-64 bg-surface-container-lowest border border-outline-variant/30 rounded-xl shadow-xl p-md z-[100] flex flex-col gap-sm text-left';
+                dropdown.innerHTML = `
+                    <div class="border-b border-outline-variant/20 pb-sm mb-xs">
+                        <p class="font-label-md text-label-md text-on-surface font-bold truncate">${currentUser.name || 'User'}</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant truncate">${currentUser.email || ''}</p>
+                        <span class="inline-block mt-xs bg-primary/10 text-primary font-label-sm text-[11px] px-2 py-0.5 rounded-full capitalize">
+                            ${role === 'provider' ? 'Internship Provider' : 'Internship Seeker'}
+                        </span>
+                    </div>
+                    ${role === 'provider' ? `
+                        <a href="post.html" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">add_circle</span> Post Internship
+                        </a>
+                        <a href="browse.html?filter=mylistings" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">work</span> Manage My Listings
+                        </a>
+                    ` : `
+                        <a href="browse.html?filter=bookmarks" class="flex items-center gap-xs p-2 rounded-lg hover:bg-surface-container transition-colors text-on-surface font-body-sm text-body-sm">
+                            <span class="material-symbols-outlined text-[18px]">bookmark</span> Saved Opportunities
+                        </a>
+                    `}
+                    <button onclick="handleGlobalSignOut()" class="w-full mt-xs flex items-center gap-xs p-2 rounded-lg hover:bg-error/10 text-error transition-colors font-label-md text-label-md text-left">
+                        <span class="material-symbols-outlined text-[18px]">logout</span> Sign Out
+                    </button>
+                `;
+                parent.appendChild(dropdown);
+            }
+        }
+    });
+
+    document.addEventListener('click', () => {
+        const dropdowns = document.querySelectorAll('#profile-dropdown-menu');
+        dropdowns.forEach(d => d.classList.add('hidden'));
+    });
+}
+
+function toggleProfileDropdown(profileLink) {
+    const parent = profileLink.parentElement;
+    if (parent) {
+        const dropdown = parent.querySelector('#profile-dropdown-menu');
+        if (dropdown) {
+            const isHidden = dropdown.classList.contains('hidden');
+            document.querySelectorAll('#profile-dropdown-menu').forEach(d => d.classList.add('hidden'));
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+            }
+        }
+    }
+}
+
+function handleGlobalSignOut() {
+    localStorage.removeItem('user_logged_in');
+    localStorage.removeItem('user_role');
+    localStorage.removeItem('user');
+    localStorage.removeItem('admin_logged_in');
+    alert("Signed out successfully.");
+    window.location.href = 'index.html';
+}
 </script>
 </body></html>
