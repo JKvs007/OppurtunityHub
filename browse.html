@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OpportunityHub - Browse Opportunities</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#5516be",
+                        "primary-container": "#4f46e5",
+                        "outline-variant": "#c7c4d8",
+                        "on-tertiary-fixed": "#23005c",
+                        "error": "#ba1a1a",
+                        "secondary": "#0058be",
+                        "surface-dim": "#dcd8e5",
+                        "surface": "#fcf8ff",
+                        "inverse-on-surface": "#f3effc",
+                        "surface-bright": "#fcf8ff",
+                        "on-surface": "#1b1b24",
+                        "surface-variant": "#e4e1ee",
+                        "on-primary-fixed": "#0f0069",
+                        "tertiary": "#571ac0",
+                        "secondary-container": "#2170e4",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#dad7ff",
+                        "primary-fixed": "#e2dfff",
+                        "outline": "#777587",
+                        "tertiary-fixed": "#e9ddff",
+                        "background": "#fcf8ff",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#e3d5ff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#6f3dd9",
+                        "surface-container": "#f0ecf9",
+                        "secondary-fixed-dim": "#adc6ff",
+                        "surface-tint": "#4d44e3",
+                        "inverse-primary": "#c3c0ff",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container-low": "#f5f2ff",
+                        "surface-container-highest": "#e4e1ee",
+                        "surface-container-high": "#eae6f4",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#004395",
+                        "on-background": "#1b1b24",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#464555",
+                        "on-primary-fixed-variant": "#3323cc",
+                        "surface-container-lowest": "#ffffff",
+                        "primary": "#3525cd",
+                        "tertiary-fixed-dim": "#d0bcff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#302f39",
+                        "on-secondary-container": "#fefcff",
+                        "primary-fixed-dim": "#c3c0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "32px",
+                        "gutter": "24px",
+                        "sm": "16px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "md": "24px",
+                        "xl": "48px",
+                        "xs": "8px",
+                        "base": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .soft-shadow {
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.04), 0 2px 4px -2px rgba(79, 70, 229, 0.04);
+        }
+        
+        .elevated-shadow {
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.1), 0 4px 6px -4px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Custom Scrollbar for Filters */
+        .filter-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .filter-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .filter-scroll::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+            border-radius: theme('borderRadius.full');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-inverse-surface/70 backdrop-blur-md docked full-width top-0 sticky z-50 border-b border-outline-variant/30 shadow-sm flex justify-between items-center w-full px-margin-desktop max-w-[1280px] mx-auto h-16 transition-all duration-200">
+<div class="flex items-center gap-md">
+<a class="flex items-center gap-2 font-headline-md text-headline-md font-bold text-primary dark:text-inverse-primary hover:opacity-80 transition-opacity" href="index.html">
+                    <img src="logo.svg" alt="Logo" class="w-8 h-8" />
+                    OpportunityHub
+                </a>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center gap-sm ml-lg">
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-1 hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="browse.html">Explore</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="browse.html">Companies</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="signin.html">My Applications</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="#">Resources</a>
+</nav>
+</div>
+<div class="flex items-center gap-sm">
+<!-- Search Bar -->
+<div class="hidden lg:flex relative mr-sm">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+<input id="nav-search" class="bg-surface-container-low border border-outline-variant rounded-full py-1.5 pl-10 pr-4 text-body-sm font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors w-48" placeholder="Search..." type="text" oninput="document.getElementById('keyword-search').value = this.value; filterOpportunities()"/>
+</div>
+<!-- Trailing Icons -->
+<button aria-label="Notifications" class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high/50 rounded-full transition-all active:scale-95 duration-200 flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button aria-label="Bookmarks" class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high/50 rounded-full transition-all active:scale-95 duration-200 flex items-center justify-center mr-xs" onclick="toggleBookmarksOnly()">
+<span id="nav-bookmark-icon" class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark</span>
+</button>
+<!-- Profile Image -->
+<a href="signin.html" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant hover:border-primary transition-colors active:scale-95 duration-200 block">
+<img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArSpbZlU6C_9qRNKA8v8YAnoYLhyXVxLjUQSlX6Xah2E-NpdUl19cGkrxMEB3y25tM1aRyh78efEf1kACgetd3WjN9_IxhHrqK1X31_3ChewcQzE3NMtEGrWELzzNtF5Ua14FcUgEjtPVzl826LHoCJo58UOjwsle1KXdg1p8i3rbNLPR5H404dTfKmMAdDyv4R06rcWJq_6eyvVBL86BBQHEH_8sL8tLkPLwSAXtKKUllP4mLvbw5TG_FASu95YV_TIkn8589ABo"/>
+</a>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-margin-mobile md:px-margin-desktop py-lg flex flex-col md:flex-row gap-xl">
+<!-- Left Sidebar Filters -->
+<aside class="w-full md:w-64 flex-shrink-0">
+<div class="sticky top-24 bg-surface rounded-xl border border-surface-variant p-md soft-shadow">
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Filters</h2>
+<button class="text-primary font-label-md text-label-md hover:underline" onclick="clearAllFilters()">Clear all</button>
+</div>
+<div class="space-y-md filter-scroll max-h-[calc(100vh-200px)] overflow-y-auto pr-2">
+<!-- Search Filter -->
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-xs">Keyword</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">search</span>
+<input id="keyword-search" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-body-sm font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Job title, skills..." type="text" oninput="filterOpportunities()"/>
+</div>
+</div>
+<!-- Category -->
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-sm">Category</label>
+<div class="space-y-xs">
+<label class="flex items-center gap-xs cursor-pointer group">
+<input checked="" class="category-checkbox rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" value="engineering" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Engineering</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input checked="" class="category-checkbox rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" value="design" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Design</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input checked="" class="category-checkbox rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" value="product" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Product</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input checked="" class="category-checkbox rounded border-outline-variant text-primary focus:ring-primary" type="checkbox" value="marketing" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Marketing</span>
+</label>
+</div>
+</div>
+<!-- Work Mode -->
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-sm">Work Mode</label>
+<div class="flex flex-wrap gap-xs" id="work-mode-filters">
+<button data-mode="remote" class="work-mode-btn active px-3 py-1 rounded-full border border-primary bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold transition-colors" onclick="toggleWorkMode(this)">Remote</button>
+<button data-mode="hybrid" class="work-mode-btn active px-3 py-1 rounded-full border border-primary bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold transition-colors" onclick="toggleWorkMode(this)">Hybrid</button>
+<button data-mode="onsite" class="work-mode-btn active px-3 py-1 rounded-full border border-primary bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold transition-colors" onclick="toggleWorkMode(this)">Onsite</button>
+</div>
+</div>
+<!-- Compensation -->
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-sm">Compensation</label>
+<div class="space-y-xs">
+<label class="flex items-center gap-xs cursor-pointer group">
+<input checked="" class="comp-radio border-outline-variant text-primary focus:ring-primary" name="comp" type="radio" value="all" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">All Roles</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="comp-radio border-outline-variant text-primary focus:ring-primary" name="comp" type="radio" value="paid" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Paid Roles</span>
+</label>
+<label class="flex items-center gap-xs cursor-pointer group">
+<input class="comp-radio border-outline-variant text-primary focus:ring-primary" name="comp" type="radio" value="unpaid" onchange="filterOpportunities()"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Unpaid / Credit</span>
+</label>
+</div>
+</div>
+<!-- Location -->
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-xs">Location</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" style="font-variation-settings: 'FILL' 0;">location_on</span>
+<input id="location-search" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 pl-10 pr-3 text-body-sm font-body-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="City, State, Country" type="text" oninput="filterOpportunities()"/>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Opportunity Grid -->
+<section class="flex-grow">
+<div class="flex justify-between items-end mb-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface hidden md:block">Explore Opportunities</h1>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface md:hidden">Explore Opportunities</h1>
+<p id="showing-count" class="font-body-sm text-body-sm text-on-surface-variant mt-1">Showing 5 relevant roles</p>
+</div>
+<div class="flex items-center gap-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sort by:</span>
+<select class="bg-transparent border-none text-primary font-label-md text-label-md cursor-pointer focus:ring-0 py-0 pl-1 pr-6">
+<option>Recommended</option>
+<option>Newest</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-gutter" id="opportunities-list">
+<!-- Card 1: Remote Role -->
+<article data-id="1" data-title="Senior Frontend Developer" data-company="UST" data-category="engineering" data-mode="remote" data-comp="paid" data-location="remote" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<div class="absolute top-md right-md">
+<button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('1', this)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
+</button>
+</div>
+<div class="flex items-start gap-sm mb-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center flex-shrink-0 overflow-hidden">
+<img alt="UST Logo" class="w-8 h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTURm5-BAHhzUMp6j1FViotUolW2QXvoNsaxTr5wvVAVqnu5dh0f0l6UEdKcAw2Nfm5BG9IeEdU9z7KwJZ7WPIjmbWWsyLazMwWHStmBTXyC3yms4vTm0YDDtqmiOmQCW1Nmzb55t2FRGfpQiqjwni7QUMJ50L8JmXom1lHiuRCbfUryTgrORVN4-zEnjkpS6TtF6OK_LYZ5Im7kUpvW_mGs1FdILKX6F2SmKvMwqlwjxu8SjEir3pEL6gN2w8jHadRoelhiWuuo8"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-[20px]">Senior Frontend Developer</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">UST</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-sm">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">public</span> Remote
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">attach_money</span> ₹12L - ₹15L/yr
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">timer</span> Closes in 5 days
+                        </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-grow">
+                        We are looking for an experienced frontend engineer to lead the development of our next-generation analytics dashboard using React and Tailwind CSS.
+                    </p>
+<div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
+<span class="font-label-sm text-label-sm text-outline">Posted 2h ago</span>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                            Apply Now
+                        </button>
+</div>
+</article>
+<!-- Card 2: Hybrid Role -->
+<article data-id="2" data-title="UX/UI Product Designer" data-company="IBS Software" data-category="design" data-mode="hybrid" data-comp="paid" data-location="kochi" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<div class="absolute top-md right-md z-10">
+<button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('2', this)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
+</button>
+</div>
+<div class="flex items-start gap-sm mb-sm relative z-10">
+<div class="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center flex-shrink-0 overflow-hidden">
+<img alt="IBS Software Logo" class="w-8 h-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCj_mAnpMREnEsQSTHSETT5LTA2w-V8QuU_0fvWn2Wu7nTFxWIbXZiPI19DRf7CJLiKmFJNP0Ir7O_BFLs6fzzqRQMgzC1oaaRO632QtnxgLAyXCYCLyZtH3aCrNFV4rYlnbSK_lcgSWvGsyXGbNiuD_6X2RFD760pKoZBQgOAxRFzp1O2V6DbzjmJ9_BxZdj5vq0vEIZrVPfBHLmiKAUWx5rHmtGeh45lYIx5yrJALoNcsewqIyD0gVwjSayEvIDn-YZQ7ZW7VMUU"/>
+</div>
+<div class="pr-8">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-[20px]">UX/UI Product Designer</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">IBS Software</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-sm relative z-10">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">domain</span> Hybrid
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">location_on</span> Kochi, Kerala
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">paid</span> ₹9L - ₹11L/yr
+                        </span>
+</div>
+<div class="grid grid-cols-3 gap-sm mb-md flex-grow">
+<div class="col-span-2">
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3">
+                                Join our core product team in Kochi. You'll be designing intuitive interfaces for complex enterprise software, working closely with engineering and product management.
+                            </p>
+</div>
+<!-- Map Preview -->
+<div class="col-span-1 h-full min-h-[80px] rounded-lg overflow-hidden border border-surface-variant relative soft-shadow">
+<div class="absolute inset-0 bg-surface-container-highest" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBIBeVj9r_xjfZ3fkoZMSkWVA6BuQTTFjLUNWOz0s3y_si1T57cJTa8TZCYxxm4ySGP0Q7m-6048JAgTqcX0BHapTa65GScm4jGBn713TOjvlaxYuN4ZRg732xCVVkjUzgZXhRTGEcoDYZP3E1e7XP3Q1HxdlAu5l4Cm00TAbYZHdQHKYbC25I4hppgLabXs9Ga46O2yKisVOtUUd01gmlrDsGzIWr8Owo6HDKe1mAbEluBAd_RVBuc5cxRVcacGaIAD8ymF4YjWZk'); background-size: cover; background-position: center;"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary drop-shadow-md text-[28px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
+<span class="font-label-sm text-label-sm text-outline">Posted 1d ago</span>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                            Apply Now
+                        </button>
+</div>
+</article>
+<!-- Card 3: Machine Learning Engineer -->
+<article data-id="3" data-title="Machine Learning Engineer" data-company="TCS" data-category="engineering" data-mode="hybrid" data-comp="paid" data-location="thiruvananthapuram" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<div class="absolute top-md right-md">
+<button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('3', this)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
+</button>
+</div>
+<div class="flex items-start gap-sm mb-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center flex-shrink-0 overflow-hidden bg-white p-xs">
+<img alt="TCS Logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ISoaFO0qW6Rd1BjboQ2IACosLCe2OOTFf7M_BD2OC7b8PA1jkClwWZQEArAC2XT3ZJ16EAaQF8q8Qd9GPZtTaIWt0a-xsFuxa1iT5fUqydDAeJwlwmu7jkcn67vG_Bv91Ou6qMqOFr9Ye711AN4q66r8s7dzcceai6GEXBToF2fv13pRnY6YCVc28h69dq9PUsxQMqni8UkkgLXtBzaCZeOJASiouIf031qwZpC5q-K6tIz5F2D3rs6zAk466yuAy13zdWe2TA0"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-[20px]">Machine Learning Engineer</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">TCS</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-sm">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">domain</span> Hybrid
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">location_on</span> Thiruvananthapuram, Kerala
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">attach_money</span> ₹10L - ₹18L/yr
+                        </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-grow">
+                        Shape the future of AI interfaces. Work with cutting-edge ML models and design interfaces for data scientists and developers.
+                    </p>
+<div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
+<span class="font-label-sm text-label-sm text-outline">Posted 2 days ago</span>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                            Apply Now
+                        </button>
+</div>
+</article>
+<!-- Card 4: Remote UX Designer -->
+<article data-id="4" data-title="Senior UX Designer" data-company="Infosys" data-category="design" data-mode="remote" data-comp="paid" data-location="remote" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<div class="absolute top-md right-md">
+<button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('4', this)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
+</button>
+</div>
+<div class="flex items-start gap-sm mb-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center flex-shrink-0 overflow-hidden bg-white p-xs">
+<img alt="Infosys Logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmKInZbH0yIKPcxyemOYzA2ZQTxdwxTDsbHPKIJMwgbL4mbXJuhrjpM3J2jKSmLFrjP61K-Csnpyr8Y_Ue9YSQxguATx6BhjJ5olSMTfaVumpuovC2Nsp-aA9SIzDmqSUCpyemH5A4V5N9eQaRwTEnztRkWE1DP9xsPU07nJjNXnwkcEnccD69Tcom4y9N0tbQbi2TdHDSNLTaTP7F-Da_ou13yuEMtpLKDh1LY1P5mwyQFvlFLzy_RHVcJsqc1_TJLbbw9xAXvFg"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-[20px]">Senior UX Designer</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Infosys</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-sm">
+<span class="inline-flex items-center gap-1 bg-tertiary-fixed text-on-tertiary-fixed px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">public</span> Remote
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">attach_money</span> ₹600 - ₹900 / hr
+                        </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-grow">
+                        Design premium brand and marketing campaign interfaces for international SaaS and tech clients.
+                    </p>
+<div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
+<span class="font-label-sm text-label-sm text-outline">Posted 5 hours ago</span>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                            Apply Now
+                        </button>
+</div>
+</article>
+<!-- Card 5: Onsite Intern -->
+<article data-id="5" data-title="Quantitative Analyst Intern" data-company="Wipro" data-category="product" data-mode="onsite" data-comp="unpaid" data-location="kochi" class="opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer" onclick="window.location.href='job-details.html'">
+<div class="absolute top-md right-md">
+<button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('5', this)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">bookmark_border</span>
+</button>
+</div>
+<div class="flex items-start gap-sm mb-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center flex-shrink-0 overflow-hidden bg-white p-xs">
+<img alt="Wipro Logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Bb6WXiYHVBVBP-vecpL4YbJAcOXmQNChbxL0GbV11xfvw_-zHR-AkmdLvSeWMv4oBXVN0Buj8UamnPPTGTCzXvbBtgXMZ1B4nWc0ZPvJP36CeX0CDrVwOSY4dopFWj6HcDBlL2vxXEGmhzt6GhLeKlmgrAyScWVnRf5Sqg9JJqt21B9uLi5LqR45oKSq5kuCa3vGNq6O6kZmnPVx2Pg9srP9JSa_HBSk_2s1hnSBMN5H1r5EcTfa2mvr8rozxy4dpCcnsWNy8g"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-[20px]">Quantitative Analyst Intern</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Wipro</p>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-sm">
+<span class="inline-flex items-center gap-1 bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">domain</span> Onsite
+                        </span>
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">location_on</span> Kochi, Kerala
+                        </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2 mb-md flex-grow">
+                        Analyze market data and build mathematical models for risk analysis. Summer 2024 cohort. Academic credit available.
+                    </p>
+<div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant">
+<span class="font-label-sm text-label-sm text-outline">Posted 1 day ago</span>
+<button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                            Apply Now
+                        </button>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-inverse-surface py-xl mt-xl border-t border-outline-variant/20 flat no shadows grid grid-cols-1 md:grid-cols-2 gap-lg px-margin-desktop max-w-[1280px] mx-auto w-full">
+<div class="flex flex-col gap-sm">
+<a class="flex items-center gap-2 font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface active:scale-95 duration-200" href="index.html">
+        <img src="logo.svg" alt="Logo" class="w-8 h-8" />
+        OpportunityHub
+    </a>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 OpportunityHub. Elevating careers globally.</p>
+</div>
+<nav class="flex flex-wrap gap-x-lg gap-y-sm md:justify-end items-center font-body-sm text-body-sm">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Help Center</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline" href="#">Contact Us</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:underline" href="post.html">Recruiter Portal</a>
+</nav>
+</footer>
+
+<script>
+// Filter state variables
+let bookmarksOnly = false;
+const activeWorkModes = new Set(['remote', 'hybrid', 'onsite']);
+
+// Load parameters and setup filters
+document.addEventListener('DOMContentLoaded', () => {
+    // Parse URL Query parameters
+    const params = new URLSearchParams(window.location.search);
+    const searchVal = params.get('search');
+    const locationVal = params.get('location');
+    const categoryVal = params.get('category');
+    const filterVal = params.get('filter');
+
+    if (searchVal) {
+        document.getElementById('keyword-search').value = searchVal;
+        document.getElementById('nav-search').value = searchVal;
+    }
+    if (locationVal) {
+        document.getElementById('location-search').value = locationVal;
+    }
+    if (categoryVal) {
+        // Uncheck other category checkboxes if a specific category was passed
+        document.querySelectorAll('.category-checkbox').forEach(cb => {
+            cb.checked = (cb.value === categoryVal);
+        });
+    }
+    if (filterVal === 'bookmarks') {
+        bookmarksOnly = true;
+        updateBookmarkIconState();
+    }
+
+    // Load bookmarks state from localStorage
+    initializeBookmarksUI();
+
+    // Trigger initial filter run
+    filterOpportunities();
+});
+
+// Bookmark Toggle functions
+function toggleBookmarksOnly() {
+    bookmarksOnly = !bookmarksOnly;
+    updateBookmarkIconState();
+    filterOpportunities();
+}
+
+function updateBookmarkIconState() {
+    const icon = document.getElementById('nav-bookmark-icon');
+    if (bookmarksOnly) {
+        icon.innerText = 'bookmark';
+        icon.style.fontVariationSettings = "'FILL' 1";
+        icon.parentElement.classList.add('text-primary');
+    } else {
+        icon.innerText = 'bookmark_border';
+        icon.style.fontVariationSettings = "'FILL' 0";
+        icon.parentElement.classList.remove('text-primary');
+    }
+}
+
+function getBookmarks() {
+    return JSON.parse(localStorage.getItem('saved_opportunities') || '[]');
+}
+
+function toggleBookmark(id, btnElement) {
+    let saved = getBookmarks();
+    const span = btnElement.querySelector('span');
+    if (saved.includes(id)) {
+        saved = saved.filter(savedId => savedId !== id);
+        span.innerText = 'bookmark_border';
+        span.style.fontVariationSettings = "'FILL' 0";
+    } else {
+        saved.push(id);
+        span.innerText = 'bookmark';
+        span.style.fontVariationSettings = "'FILL' 1";
+    }
+    localStorage.setItem('saved_opportunities', JSON.stringify(saved));
+    if (bookmarksOnly) {
+        filterOpportunities();
+    }
+}
+
+function initializeBookmarksUI() {
+    const saved = getBookmarks();
+    document.querySelectorAll('.opp-card').forEach(card => {
+        const id = card.getAttribute('data-id');
+        const btn = card.querySelector('.bookmark-btn span');
+        if (saved.includes(id)) {
+            btn.innerText = 'bookmark';
+            btn.style.fontVariationSettings = "'FILL' 1";
+        } else {
+            btn.innerText = 'bookmark_border';
+            btn.style.fontVariationSettings = "'FILL' 0";
+        }
+    });
+}
+
+// Work Mode Toggles
+function toggleWorkMode(button) {
+    const mode = button.getAttribute('data-mode');
+    if (activeWorkModes.has(mode)) {
+        activeWorkModes.delete(mode);
+        button.classList.remove('active', 'border-primary', 'bg-primary-fixed', 'text-on-primary-fixed-variant', 'font-semibold');
+        button.classList.add('border-outline-variant', 'text-on-surface-variant');
+    } else {
+        activeWorkModes.add(mode);
+        button.classList.add('active', 'border-primary', 'bg-primary-fixed', 'text-on-primary-fixed-variant', 'font-semibold');
+        button.classList.remove('border-outline-variant', 'text-on-surface-variant');
+    }
+    filterOpportunities();
+}
+
+// Clear all filters
+function clearAllFilters() {
+    document.getElementById('keyword-search').value = '';
+    document.getElementById('nav-search').value = '';
+    document.getElementById('location-search').value = '';
+    document.querySelectorAll('.category-checkbox').forEach(cb => cb.checked = true);
+    
+    document.querySelectorAll('.work-mode-btn').forEach(btn => {
+        const mode = btn.getAttribute('data-mode');
+        activeWorkModes.add(mode);
+        btn.classList.add('active', 'border-primary', 'bg-primary-fixed', 'text-on-primary-fixed-variant', 'font-semibold');
+        btn.classList.remove('border-outline-variant', 'text-on-surface-variant');
+    });
+
+    document.querySelectorAll('.comp-radio').forEach(radio => {
+        radio.checked = (radio.value === 'all');
+    });
+    
+    bookmarksOnly = false;
+    updateBookmarkIconState();
+    filterOpportunities();
+}
+
+// Primary Filter Function
+function filterOpportunities() {
+    const keyword = document.getElementById('keyword-search').value.toLowerCase();
+    const location = document.getElementById('location-search').value.toLowerCase();
+    
+    const checkedCategories = new Set();
+    document.querySelectorAll('.category-checkbox:checked').forEach(cb => checkedCategories.add(cb.value));
+
+    const selectedComp = document.querySelector('.comp-radio:checked').value;
+    const bookmarks = getBookmarks();
+
+    let visibleCount = 0;
+
+    document.querySelectorAll('.opp-card').forEach(card => {
+        const id = card.getAttribute('data-id');
+        const title = card.getAttribute('data-title').toLowerCase();
+        const company = card.getAttribute('data-company').toLowerCase();
+        const category = card.getAttribute('data-category');
+        const mode = card.getAttribute('data-mode');
+        const comp = card.getAttribute('data-comp');
+        const loc = card.getAttribute('data-location').toLowerCase();
+
+        // 1. Keyword check
+        const keywordMatch = !keyword || title.includes(keyword) || company.includes(keyword);
+
+        // 2. Location check
+        const locationMatch = !location || loc.includes(location);
+
+        // 3. Category check
+        const categoryMatch = checkedCategories.has(category);
+
+        // 4. Work Mode check
+        const workModeMatch = activeWorkModes.has(mode);
+
+        // 5. Compensation check
+        const compMatch = (selectedComp === 'all') || (comp === selectedComp);
+
+        // 6. Bookmarks check
+        const bookmarkMatch = !bookmarksOnly || bookmarks.includes(id);
+
+        if (keywordMatch && locationMatch && categoryMatch && workModeMatch && compMatch && bookmarkMatch) {
+            card.style.display = 'flex';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    // Update visibility count UI
+    document.getElementById('showing-count').innerText = `Showing ${visibleCount} relevant role${visibleCount === 1 ? '' : 's'}`;
+}
+</script>
+</body></html>
