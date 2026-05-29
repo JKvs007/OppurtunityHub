@@ -202,7 +202,56 @@
     </script>
 </head>
 <body class="bg-surface min-h-screen flex items-center justify-center p-margin-mobile md:p-margin-desktop font-body-md text-on-surface">
-<div class="w-full max-w-[1024px] grid grid-cols-1 lg:grid-cols-2 gap-lg lg:gap-xl">
+
+<!-- ══ STEP 1: Role Selection Overlay ══ -->
+<div id="role-selection-overlay" class="fixed inset-0 z-[200] flex items-center justify-center bg-surface p-4 transition-all duration-500">
+    <div class="max-w-2xl w-full flex flex-col items-center">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 mb-4">
+            <img src="logo.svg" alt="OpportunityHub" class="w-10 h-10" />
+            <span class="font-headline-md text-headline-md font-bold text-primary">OpportunityHub</span>
+        </div>
+        <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2 text-center">How would you like to join?</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-8 text-center max-w-md">Select your role to get started. You can always change this later.</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-md w-full max-w-lg">
+            <!-- Seeker Card -->
+            <button onclick="selectRoleAndContinue('seeker')" class="group relative bg-surface-container-lowest rounded-2xl border-2 border-outline-variant/30 hover:border-primary p-lg flex flex-col items-center text-center gap-sm transition-all duration-300 hover:shadow-[0_12px_40px_rgba(53,37,205,0.12)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                <div class="w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center mb-xs group-hover:bg-primary/15 transition-colors">
+                    <span class="material-symbols-outlined text-primary text-[40px]" style="font-variation-settings: 'FILL' 1;">search</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface font-bold">Internship Seeker</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Browse and apply for internships, save opportunities, and track applications.</p>
+                <div class="mt-auto pt-sm">
+                    <span class="inline-flex items-center gap-1 text-primary font-label-md text-label-md group-hover:gap-2 transition-all">
+                        Get Started <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </span>
+                </div>
+            </button>
+            
+            <!-- Provider Card -->
+            <button onclick="selectRoleAndContinue('provider')" class="group relative bg-surface-container-lowest rounded-2xl border-2 border-outline-variant/30 hover:border-tertiary p-lg flex flex-col items-center text-center gap-sm transition-all duration-300 hover:shadow-[0_12px_40px_rgba(87,26,192,0.12)] hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+                <div class="w-20 h-20 rounded-2xl bg-tertiary/10 flex items-center justify-center mb-xs group-hover:bg-tertiary/15 transition-colors">
+                    <span class="material-symbols-outlined text-tertiary text-[40px]" style="font-variation-settings: 'FILL' 1;">business</span>
+                </div>
+                <h3 class="font-headline-md text-headline-md text-on-surface font-bold">Internship Provider</h3>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">Post internship opportunities, manage listings, and find talented candidates.</p>
+                <div class="mt-auto pt-sm">
+                    <span class="inline-flex items-center gap-1 text-tertiary font-label-md text-label-md group-hover:gap-2 transition-all">
+                        Get Started <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </span>
+                </div>
+            </button>
+        </div>
+        
+        <a href="index.html" class="mt-8 text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Home
+        </a>
+    </div>
+</div>
+
+<!-- ══ STEP 2: Auth Form (hidden initially) ══ -->
+<div id="auth-form-container" class="w-full max-w-[1024px] grid grid-cols-1 lg:grid-cols-2 gap-lg lg:gap-xl opacity-0 translate-y-4 transition-all duration-500" style="pointer-events: none;">
 <!-- Login Card -->
 <div class="bg-surface-container-lowest rounded-[16px] border border-outline-variant/30 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-[24px] lg:p-[40px] flex flex-col justify-center relative">
 <a href="index.html" class="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-container-highest/50 transition-colors text-on-surface-variant flex items-center justify-center" aria-label="Close">
@@ -256,14 +305,10 @@ OpportunityHub
 <span class="font-label-sm text-label-sm text-on-surface-variant">Or continue with</span>
 <div class="h-px bg-outline-variant/50 flex-1"></div>
 </div>
-<div class="mt-sm grid grid-cols-2 gap-sm">
-<button id="google-signin-btn" type="button" onclick="loginWithGoogle()" class="h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-all active:scale-[0.98] text-on-surface font-label-md text-label-md">
-<span class="material-symbols-outlined text-[#4285F4]" data-icon="google" style="font-size: 20px; font-variation-settings: 'FILL' 1;">account_circle</span>
-                    Google
-                </button>
-<button id="linkedin-signin-btn" type="button" onclick="loginWithLinkedIn()" class="h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-all active:scale-[0.98] text-on-surface font-label-md text-label-md">
-<span class="material-symbols-outlined text-[#0A66C2]" data-icon="linkedin" style="font-size: 20px; font-variation-settings: 'FILL' 1;">work</span>
-                    LinkedIn
+<div class="mt-sm">
+<button id="google-signin-btn" type="button" onclick="loginWithGoogle()" class="w-full h-12 border border-outline-variant rounded-lg flex items-center justify-center gap-xs hover:bg-surface-container-low transition-all active:scale-[0.98] text-on-surface font-label-md text-label-md">
+<svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.18 4.114-3.466 0-6.275-2.85-6.275-6.363s2.81-6.363 6.275-6.363c1.558 0 2.98.57 4.084 1.503l3.056-3.09C19.14 1.91 15.918 1 12.24 1 6.033 1 1 5.925 1 12s5.033 11 11.24 11c5.845 0 10.87-4.148 10.87-11 0-.64-.067-1.258-.19-1.857H12.24z"/></svg>
+                    Continue with Google
                 </button>
 </div>
 <div class="mt-lg text-center">
@@ -359,16 +404,7 @@ OpportunityHub
                 <p class="font-body-sm text-[11px] text-on-surface-variant">to continue to OpportunityHub</p>
             </div>
         </div>
-        <!-- LinkedIn Header -->
-        <div id="linkedin-oauth-header" class="hidden bg-[#0A66C2] px-lg py-md text-white flex items-center gap-sm">
-            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
-            <div class="text-left">
-                <h4 class="font-label-md text-label-md font-bold">LinkedIn Sign In</h4>
-                <p class="font-body-sm text-[11px] opacity-80">Authorize OpportunityHub to access your profile</p>
-            </div>
-        </div>
+        <!-- LinkedIn Header removed -->
 
         <div class="p-lg flex flex-col gap-md">
             <p class="font-body-sm text-body-sm text-on-surface-variant text-left">Choose an account or log in with your email:</p>
@@ -651,52 +687,58 @@ async function loginWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             provider.addScope('email');
             provider.addScope('profile');
-            const result = await auth.signInWithPopup(provider);
-            const user = result.user;
-
-            const userData = {
-                name: user.displayName || 'Google User',
-                email: user.email,
-                role: currentRole,
-                authProvider: 'google'
-            };
-
-            localStorage.setItem('user_logged_in', 'true');
-            localStorage.setItem('user_role', currentRole);
-            localStorage.setItem('user', JSON.stringify(userData));
-
-            // Save to Firestore
-            try { await saveUserProfile(userData); } catch(e) { console.warn(e); }
-
-            redirectByUserRole(currentRole);
-            return;
+            // Store role before redirect (for redirect flow)
+            localStorage.setItem('pending_google_role', currentRole);
+            // Try popup first
+            try {
+                const result = await auth.signInWithPopup(provider);
+                await handleGoogleResult(result);
+                return;
+            } catch (popupErr) {
+                console.warn('Popup failed, trying redirect...', popupErr.code);
+                // If popup blocked or failed, try redirect
+                if (popupErr.code === 'auth/popup-blocked' || popupErr.code === 'auth/popup-closed-by-user' || popupErr.code === 'auth/cancelled-popup-request') {
+                    await auth.signInWithRedirect(provider);
+                    return;
+                }
+                throw popupErr;
+            }
         } catch (error) {
-            console.warn("Firebase Google sign-in failed, showing simulation:", error.message);
+            console.warn('Firebase Google sign-in error:', error.code, error.message);
+            if (error.code === 'auth/unauthorized-domain') {
+                alert('Google Sign-In requires domain authorization.\nPlease use Email + Password to sign in, or use the Google account picker below.');
+            }
         }
     }
     // Fallback: show simulated OAuth picker
     showSimulatedOAuth('Google');
 }
 
-// ── LinkedIn Sign-In (no native Firebase support) ────────────────
-function loginWithLinkedIn() {
-    showSimulatedOAuth('LinkedIn');
+async function handleGoogleResult(result) {
+    const user = result.user;
+    if (!user) return;
+    const role = localStorage.getItem('pending_google_role') || currentRole;
+    localStorage.removeItem('pending_google_role');
+
+    const userData = {
+        name: user.displayName || 'Google User',
+        email: user.email,
+        role: role,
+        authProvider: 'google'
+    };
+
+    localStorage.setItem('user_logged_in', 'true');
+    localStorage.setItem('user_role', role);
+    localStorage.setItem('user', JSON.stringify(userData));
+    try { await saveUserProfile(userData); } catch(e) { console.warn(e); }
+    redirectByUserRole(role);
 }
 
 // ── Simulated OAuth Modal ────────────────────────────────────────
 function showSimulatedOAuth(providerName) {
     activeOAuthProvider = providerName;
-    if (providerName === 'Google') {
-        document.getElementById('google-oauth-header').classList.remove('hidden');
-        document.getElementById('google-oauth-header').classList.add('flex');
-        document.getElementById('linkedin-oauth-header').classList.add('hidden');
-        document.getElementById('linkedin-oauth-header').classList.remove('flex');
-    } else {
-        document.getElementById('linkedin-oauth-header').classList.remove('hidden');
-        document.getElementById('linkedin-oauth-header').classList.add('flex');
-        document.getElementById('google-oauth-header').classList.add('hidden');
-        document.getElementById('google-oauth-header').classList.remove('flex');
-    }
+    document.getElementById('google-oauth-header').classList.remove('hidden');
+    document.getElementById('google-oauth-header').classList.add('flex');
     const modal = document.getElementById('oauth-modal');
     const content = document.getElementById('oauth-content');
     modal.classList.remove('hidden');
@@ -807,24 +849,44 @@ if (desktopBtn) {
     });
 }
 
+// ── Role Selection Step ──────────────────────────────────────────
+function selectRoleAndContinue(role) {
+    currentRole = role;
+    setRole(role);
+    // Animate out the overlay
+    const overlay = document.getElementById('role-selection-overlay');
+    const formContainer = document.getElementById('auth-form-container');
+    overlay.style.opacity = '0';
+    overlay.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        overlay.style.display = 'none';
+        formContainer.style.opacity = '1';
+        formContainer.style.transform = 'translateY(0)';
+        formContainer.style.pointerEvents = 'auto';
+    }, 400);
+}
+
 // ── URL Parameters on Load ───────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('mode') === 'signup') {
         setMode('signup');
     }
     const roleParam = params.get('role');
     if (roleParam === 'provider' || roleParam === 'seeker') {
-        setRole(roleParam);
+        // If role is specified in URL, skip role selection step
+        selectRoleAndContinue(roleParam);
     }
 
-    // If already logged in, redirect away from sign-in page
-    if (localStorage.getItem('user_logged_in') === 'true') {
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-        const fromParam = params.get('from');
-        if (!fromParam) {
-            // Only auto-redirect if not coming from a specific page
-            // redirectByUserRole(user.role || 'seeker');
+    // Handle Google redirect result
+    if (auth) {
+        try {
+            const result = await auth.getRedirectResult();
+            if (result && result.user) {
+                await handleGoogleResult(result);
+            }
+        } catch(e) {
+            console.warn('Redirect result error:', e);
         }
     }
 });

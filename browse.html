@@ -145,8 +145,7 @@
 <nav class="hidden md:flex items-center gap-sm ml-lg">
 <a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-1 hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="browse.html">Explore</a>
 <a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="browse.html">Companies</a>
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="signin.html">My Applications</a>
-<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="#">Resources</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors hover:bg-surface-container-high/50 dark:hover:bg-surface-container-highest/20 rounded-lg transition-all active:scale-95 duration-200 px-3 py-2 font-label-md text-label-md" href="browse.html?filter=bookmarks">My Applications</a>
 </nav>
 </div>
 <div class="flex items-center gap-sm">
@@ -495,9 +494,27 @@ let myListingsOnly = false;
 const activeWorkModes = new Set(['remote', 'hybrid', 'onsite']);
 
 async function loadAndRender() {
-    const oppList = await getOpportunities();
-    renderOpportunitiesList(oppList);
-    filterOpportunities();
+    const container = document.getElementById('opportunities-list');
+    // Show loading state
+    container.innerHTML = '<div class="col-span-full flex items-center justify-center py-xl text-on-surface-variant"><span class="material-symbols-outlined animate-spin text-primary mr-2">progress_activity</span> Loading opportunities...</div>';
+    
+    try {
+        const oppList = await getOpportunities();
+        console.log('Loaded opportunities:', oppList.length);
+        if (oppList.length === 0) {
+            container.innerHTML = '<div class="col-span-full text-center py-xl text-on-surface-variant"><span class="material-symbols-outlined text-[48px] mb-2 block text-outline">inbox</span><p class="font-headline-md text-headline-md">No opportunities yet</p><p class="font-body-sm text-body-sm mt-1">Check back soon or post one yourself!</p></div>';
+            document.getElementById('showing-count').innerText = 'Showing 0 relevant roles';
+            return;
+        }
+        renderOpportunitiesList(oppList);
+        // Small delay to ensure DOM is updated before filtering
+        requestAnimationFrame(() => {
+            filterOpportunities();
+        });
+    } catch (err) {
+        console.error('Error loading opportunities:', err);
+        container.innerHTML = '<div class="col-span-full text-center py-xl text-error"><span class="material-symbols-outlined text-[48px] mb-2 block">error</span><p>Failed to load opportunities. Please refresh.</p></div>';
+    }
 }
 
 function getRemovedOpportunities() {
