@@ -219,6 +219,10 @@ OpportunityHub
 <p class="font-body-sm text-body-sm text-on-surface-variant">Log in to continue your journey.</p>
 </div>
 <form class="space-y-sm">
+<div id="name-field-container" class="hidden">
+<label class="font-label-sm text-label-sm text-on-surface block mb-base" for="login-name">Full Name</label>
+<input class="w-full h-12 rounded-lg border border-outline-variant px-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-sm text-body-sm bg-transparent text-on-surface placeholder:text-on-surface-variant/50" id="login-name" placeholder="John Doe" type="text"/>
+</div>
 <div>
 <label class="font-label-sm text-label-sm text-on-surface block mb-base" for="login-email">Email</label>
 <input class="w-full h-12 rounded-lg border border-outline-variant px-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-body-sm text-body-sm bg-transparent text-on-surface placeholder:text-on-surface-variant/50" id="login-email" placeholder="name@company.com" type="email"/>
@@ -250,7 +254,7 @@ OpportunityHub
 <div class="mt-lg text-center">
 <p class="font-body-sm text-body-sm text-on-surface-variant">
                     Don't have an account? 
-                    <button class="text-primary font-label-sm text-label-sm hover:underline ml-xs">Sign Up</button>
+                    <button type="button" onclick="setMode('signup')" class="text-primary font-label-sm text-label-sm hover:underline ml-xs">Sign Up</button>
 </p>
 </div>
 </div>
@@ -268,9 +272,9 @@ OpportunityHub
 <div class="space-y-sm mt-xl bg-surface-container-lowest/10 backdrop-blur-md p-lg rounded-xl border border-white/10">
 <h3 class="font-headline-md text-headline-md mb-md">Create Account</h3>
 <div class="space-y-sm">
-<input class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Full Name" type="text"/>
-<input class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Work Email" type="email"/>
-<input class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Create Password" type="password"/>
+<input id="desktop-name" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Full Name" type="text"/>
+<input id="desktop-email" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Work Email" type="email"/>
+<input id="desktop-password" class="w-full h-12 rounded-lg border border-white/20 bg-white/5 px-sm focus:border-white focus:ring-1 focus:ring-white outline-none transition-colors font-body-sm text-body-sm text-on-primary-container placeholder:text-on-primary-container/50" placeholder="Create Password" type="password"/>
 </div>
 <button class="w-full h-12 bg-on-primary-container text-primary-container rounded-lg font-label-md text-label-md hover:bg-white transition-all active:scale-[0.98] mt-md" type="button">Start Application</button>
 <p class="font-body-sm text-body-sm text-center mt-sm opacity-80 text-xs">
@@ -281,24 +285,76 @@ OpportunityHub
 </div>
 </div>
 <script>
-document.querySelectorAll('button').forEach(btn => {
-    if (btn.innerText.trim() === 'Log In' || btn.innerText.trim() === 'Start Application') {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('login-email');
-            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-            
-            if (email === 'oppurtunityhubber@gmail.com') {
-                localStorage.setItem('admin_logged_in', 'true');
-                localStorage.setItem('user_logged_in', 'true');
-                localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
-            } else {
-                localStorage.setItem('user_logged_in', 'true');
-                localStorage.removeItem('admin_logged_in');
-                localStorage.setItem('user', JSON.stringify({ name: 'Alex Chen', email: email || 'alex.chen@example.com' }));
-            }
-            window.location.href = 'browse.html';
-        });
+function setMode(mode) {
+    const headerTitle = document.querySelector('.text-center h1');
+    const headerDesc = document.querySelector('.text-center p');
+    const nameField = document.getElementById('name-field-container');
+    const submitBtn = document.querySelector('form button');
+    const footerParagraph = document.querySelector('.mt-lg.text-center p');
+    
+    if (mode === 'signup') {
+        headerTitle.textContent = 'Create Account';
+        headerDesc.textContent = 'Join the premier platform for top-tier opportunities.';
+        nameField.classList.remove('hidden');
+        submitBtn.textContent = 'Start Application';
+        footerParagraph.innerHTML = `Already have an account? <button type="button" onclick="setMode('login')" class="text-primary font-label-sm text-label-sm hover:underline ml-xs">Log In</button>`;
+    } else {
+        headerTitle.textContent = 'Welcome Back';
+        headerDesc.textContent = 'Log in to continue your journey.';
+        nameField.classList.add('hidden');
+        submitBtn.textContent = 'Log In';
+        footerParagraph.innerHTML = `Don't have an account? <button type="button" onclick="setMode('signup')" class="text-primary font-label-sm text-label-sm hover:underline ml-xs">Sign Up</button>`;
+    }
+}
+
+// Attach listener to left card form submit button
+document.querySelector('form button').addEventListener('click', (e) => {
+    e.preventDefault();
+    const emailInput = document.getElementById('login-email');
+    const nameInput = document.getElementById('login-name');
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+    const name = nameInput ? nameInput.value.trim() : '';
+    
+    if (email === 'oppurtunityhubber@gmail.com') {
+        localStorage.setItem('admin_logged_in', 'true');
+        localStorage.setItem('user_logged_in', 'true');
+        localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
+    } else {
+        localStorage.setItem('user_logged_in', 'true');
+        localStorage.removeItem('admin_logged_in');
+        localStorage.setItem('user', JSON.stringify({ name: name || 'Alex Chen', email: email || 'alex.chen@example.com' }));
+    }
+    window.location.href = 'browse.html';
+});
+
+// Attach listener to desktop signup button if it exists
+const desktopBtn = document.querySelector('.bg-primary-container button');
+if (desktopBtn) {
+    desktopBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const emailInput = document.getElementById('desktop-email');
+        const nameInput = document.getElementById('desktop-name');
+        const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+        const name = nameInput ? nameInput.value.trim() : '';
+        
+        if (email === 'oppurtunityhubber@gmail.com') {
+            localStorage.setItem('admin_logged_in', 'true');
+            localStorage.setItem('user_logged_in', 'true');
+            localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
+        } else {
+            localStorage.setItem('user_logged_in', 'true');
+            localStorage.removeItem('admin_logged_in');
+            localStorage.setItem('user', JSON.stringify({ name: name || 'Alex Chen', email: email || 'alex.chen@example.com' }));
+        }
+        window.location.href = 'browse.html';
+    });
+}
+
+// Check URL parameters on load
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('mode') === 'signup') {
+        setMode('signup');
     }
 });
 </script>

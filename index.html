@@ -375,8 +375,46 @@
 </div>
 </div>
 </footer>
+
+<!-- Welcome Auth Modal -->
+<div id="auth-welcome-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-md p-4 transition-all duration-300">
+    <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-[0_20px_50px_rgba(79,70,229,0.15)] p-lg max-w-md w-full text-center flex flex-col items-center gap-md transform scale-95 opacity-0 transition-all duration-300" id="auth-welcome-content">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+            <span class="material-symbols-outlined text-[36px]">rocket_launch</span>
+        </div>
+        <h3 class="font-headline-md text-headline-md text-on-surface">Elevate Your Career</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant">
+            Create an account to unlock tailored job recommendations, track your applications, and connect with premium recruiters.
+        </p>
+        <div class="w-full flex flex-col gap-sm mt-md">
+            <a href="signin.html?mode=signup" class="w-full bg-primary hover:bg-primary/95 text-on-primary font-label-md text-label-md py-3.5 rounded-lg transition-all flex items-center justify-center gap-xs shadow-sm hover:scale-[1.01] active:scale-[0.99]">
+                <span>Create Account / Sign Up</span>
+            </a>
+            <a href="signin.html" class="w-full border border-primary/30 hover:border-primary text-primary font-label-md text-label-md py-3.5 rounded-lg transition-all hover:bg-primary/5 active:scale-[0.99] flex items-center justify-center">
+                <span>Already have an account? Log In</span>
+            </a>
+            <button onclick="skipAuthPrompt()" class="w-full text-on-surface-variant hover:text-primary font-label-sm text-label-sm py-2 transition-colors">
+                Skip for now
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
+function skipAuthPrompt() {
+    localStorage.setItem('auth_prompt_dismissed', 'true');
+    const modal = document.getElementById('auth-welcome-modal');
+    const content = document.getElementById('auth-welcome-content');
+    content.classList.remove('scale-100', 'opacity-100');
+    content.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+    }, 300);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Hide removed opportunities
     try {
         const removed = JSON.parse(localStorage.getItem('removed_opportunities') || '[]');
         if (removed && removed.length > 0) {
@@ -389,6 +427,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } catch (e) {
         console.error('Error loading removed opportunities:', e);
+    }
+
+    // 2. Auth welcome modal logic
+    const userLoggedIn = localStorage.getItem('user_logged_in') === 'true';
+    const promptDismissed = localStorage.getItem('auth_prompt_dismissed') === 'true';
+
+    if (!userLoggedIn && !promptDismissed) {
+        const modal = document.getElementById('auth-welcome-modal');
+        const content = document.getElementById('auth-welcome-content');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        // Trigger reflow for transition animation
+        setTimeout(() => {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 100);
     }
 });
 </script>
