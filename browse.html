@@ -479,8 +479,62 @@
 let bookmarksOnly = false;
 const activeWorkModes = new Set(['remote', 'hybrid', 'onsite']);
 
+function getRemovedOpportunities() {
+    try {
+        return JSON.parse(localStorage.getItem('removed_opportunities') || '[]');
+    } catch (e) {
+        return [];
+    }
+}
+
+function removeOpportunity(id) {
+    const removed = getRemovedOpportunities();
+    if (!removed.includes(id)) {
+        removed.push(id);
+        localStorage.setItem('removed_opportunities', JSON.stringify(removed));
+    }
+    filterOpportunities();
+}
+
 // Load parameters and setup filters
 document.addEventListener('DOMContentLoaded', () => {
+    // Setup Admin Panel if logged in
+    if (localStorage.getItem('admin_logged_in') === 'true') {
+        const banner = document.createElement('div');
+        banner.className = 'w-full bg-error/15 text-error px-margin-desktop py-3 flex justify-between items-center border-b border-error/20 font-label-md text-label-md max-sm:px-margin-mobile z-50 sticky top-[64px] backdrop-blur-md';
+        banner.innerHTML = `
+            <div class="flex items-center gap-xs">
+                <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+                <span>Admin Mode: logged in as oppurtunityhubber@gmail.com</span>
+            </div>
+            <button onclick="localStorage.removeItem('admin_logged_in'); window.location.reload();" class="text-error hover:underline flex items-center gap-xs">
+                <span>Log Out</span>
+                <span class="material-symbols-outlined text-[16px]">logout</span>
+            </button>
+        `;
+        document.body.prepend(banner);
+
+        document.querySelectorAll('.opp-card').forEach(card => {
+            const id = card.getAttribute('data-id');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'absolute top-12 right-2 p-1.5 bg-error/10 hover:bg-error hover:text-white text-error rounded-full transition-all z-20 flex items-center justify-center';
+            deleteBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">delete</span>';
+            deleteBtn.title = 'Remove Fake Company/Listing';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm('Are you sure you want to remove this listing?')) {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.transform = 'scale(0.9)';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        removeOpportunity(id);
+                    }, 300);
+                }
+            });
+            card.appendChild(deleteBtn);
+        });
+    }
+
     // Parse URL Query parameters
     const params = new URLSearchParams(window.location.search);
     const searchVal = params.get('search');
@@ -496,7 +550,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('location-search').value = locationVal;
     }
     if (categoryVal) {
-        // Uncheck other category checkboxes if a specific category was passed
         document.querySelectorAll('.category-checkbox').forEach(cb => {
             cb.checked = (cb.value === categoryVal);
         });
@@ -506,10 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateBookmarkIconState();
     }
 
-    // Load bookmarks state from localStorage
     initializeBookmarksUI();
-
-    // Trigger initial filter run
     filterOpportunities();
 });
 
@@ -618,11 +668,16 @@ function filterOpportunities() {
 
     const selectedComp = document.querySelector('.comp-radio:checked').value;
     const bookmarks = getBookmarks();
+    const removed = getRemovedOpportunities();
 
     let visibleCount = 0;
 
     document.querySelectorAll('.opp-card').forEach(card => {
         const id = card.getAttribute('data-id');
+        if (removed.includes(id)) {
+            card.style.display = 'none';
+            return;
+        }
         const title = card.getAttribute('data-title').toLowerCase();
         const company = card.getAttribute('data-company').toLowerCase();
         const category = card.getAttribute('data-category');

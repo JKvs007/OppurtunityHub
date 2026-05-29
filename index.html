@@ -222,7 +222,7 @@
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
 <!-- Card 1 -->
-<div onclick="window.location.href='job-details.html'" class="bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
+<div data-id="3" onclick="window.location.href='job-details.html'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
 <div class="flex justify-between items-start mb-md">
 <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
 <img alt="TCS logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-ISoaFO0qW6Rd1BjboQ2IACosLCe2OOTFf7M_BD2OC7b8PA1jkClwWZQEArAC2XT3ZJ16EAaQF8q8Qd9GPZtTaIWt0a-xsFuxa1iT5fUqydDAeJwlwmu7jkcn67vG_Bv91Ou6qMqOFr9Ye711AN4q66r8s7dzcceai6GEXBToF2fv13pRnY6YCVc28h69dq9PUsxQMqni8UkkgLXtBzaCZeOJASiouIf031qwZpC5q-K6tIz5F2D3rs6zAk466yuAy13zdWe2TA0"/>
@@ -248,7 +248,7 @@
 </div>
 </div>
 <!-- Card 2 -->
-<div onclick="window.location.href='job-details.html'" class="bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
+<div data-id="4" onclick="window.location.href='job-details.html'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
 <div class="flex justify-between items-start mb-md">
 <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
 <img alt="Infosys logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmKInZbH0yIKPcxyemOYzA2ZQTxdwxTDsbHPKIJMwgbL4mbXJuhrjpM3J2jKSmLFrjP61K-Csnpyr8Y_Ue9YSQxguATx6BhjJ5olSMTfaVumpuovC2Nsp-aA9SIzDmqSUCpyemH5A4V5N9eQaRwTEnztRkWE1DP9xsPU07nJjNXnwkcEnccD69Tcom4y9N0tbQbi2TdHDSNLTaTP7F-Da_ou13yuEMtpLKDh1LY1P5mwyQFvlFLzy_RHVcJsqc1_TJLbbw9xAXvFg"/>
@@ -274,7 +274,7 @@
 </div>
 </div>
 <!-- Card 3 -->
-<div onclick="window.location.href='job-details.html'" class="bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
+<div data-id="5" onclick="window.location.href='job-details.html'" class="featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary">
 <div class="flex justify-between items-start mb-md">
 <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
 <img alt="Wipro logo" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Bb6WXiYHVBVBP-vecpL4YbJAcOXmQNChbxL0GbV11xfvw_-zHR-AkmdLvSeWMv4oBXVN0Buj8UamnPPTGTCzXvbBtgXMZ1B4nWc0ZPvJP36CeX0CDrVwOSY4dopFWj6HcDBlL2vxXEGmhzt6GhLeKlmgrAyScWVnRf5Sqg9JJqt21B9uLi5LqR45oKSq5kuCa3vGNq6O6kZmnPVx2Pg9srP9JSa_HBSk_2s1hnSBMN5H1r5EcTfa2mvr8rozxy4dpCcnsWNy8gM"/>
@@ -375,4 +375,21 @@
 </div>
 </div>
 </footer>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        const removed = JSON.parse(localStorage.getItem('removed_opportunities') || '[]');
+        if (removed && removed.length > 0) {
+            document.querySelectorAll('.featured-card').forEach(card => {
+                const id = card.getAttribute('data-id');
+                if (removed.includes(id)) {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    } catch (e) {
+        console.error('Error loading removed opportunities:', e);
+    }
+});
+</script>
 </body></html>

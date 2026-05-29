@@ -285,8 +285,18 @@ document.querySelectorAll('button').forEach(btn => {
     if (btn.innerText.trim() === 'Log In' || btn.innerText.trim() === 'Start Application') {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            localStorage.setItem('user_logged_in', 'true');
-            localStorage.setItem('user', JSON.stringify({ name: 'Alex Chen', email: 'alex.chen@example.com' }));
+            const emailInput = document.getElementById('login-email');
+            const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+            
+            if (email === 'oppurtunityhubber@gmail.com') {
+                localStorage.setItem('admin_logged_in', 'true');
+                localStorage.setItem('user_logged_in', 'true');
+                localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
+            } else {
+                localStorage.setItem('user_logged_in', 'true');
+                localStorage.removeItem('admin_logged_in');
+                localStorage.setItem('user', JSON.stringify({ name: 'Alex Chen', email: email || 'alex.chen@example.com' }));
+            }
             window.location.href = 'browse.html';
         });
     }
