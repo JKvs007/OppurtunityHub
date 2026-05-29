@@ -173,15 +173,15 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
 <div class="md:col-span-2">
 <label class="form-label">Opportunity Title</label>
-<input class="form-input" placeholder="e.g. Senior Product Designer" type="text"/>
+<input id="opp-title" class="form-input" placeholder="e.g. Senior Product Designer" type="text" required/>
 </div>
 <div>
 <label class="form-label">Company Name</label>
-<input class="form-input" type="text" value="UST"/>
+<input id="opp-company" class="form-input" type="text" value="UST" required/>
 </div>
 <div>
 <label class="form-label">Category</label>
-<select class="form-input">
+<select id="opp-category" class="form-input" required>
 <option disabled="" selected="" value="">Select a category</option>
 <option value="engineering">Engineering &amp; Tech</option>
 <option value="design">Design &amp; UX</option>
@@ -208,7 +208,7 @@
 <div class="grid grid-cols-1 gap-gutter">
 <div id="location-input-group">
 <label class="form-label">Primary Location</label>
-<input class="form-input" placeholder="City, State or Region" type="text"/>
+<input id="opp-location" class="form-input" placeholder="City, State or Region" type="text"/>
 </div>
 <!-- Dynamic Map Wrapper -->
 <div class="relative w-full h-[280px] rounded-xl overflow-hidden border border-outline-variant/30 mt-sm bg-surface-container" id="map-wrapper">
@@ -250,7 +250,7 @@
 </div>
 <div>
 <label class="form-label">Application Deadline</label>
-<input class="form-input text-on-surface-variant" type="date"/>
+<input id="opp-deadline" class="form-input text-on-surface-variant" type="date"/>
 </div>
 </div>
 <div class="p-md rounded-lg bg-surface-container border border-outline-variant/20 grid grid-cols-1 md:grid-cols-2 gap-gutter items-center">
@@ -270,8 +270,8 @@
 <div id="stipend-input-wrapper">
 <label class="form-label">Stipend / Salary Range (Optional)</label>
 <div class="relative">
-<span class="absolute left-sm top-1/2 -translate-y-1/2 font-body-md text-on-surface-variant">$</span>
-<input class="form-input pl-8" placeholder="e.g. 50,000 - 70,000 / yr" type="text"/>
+<span class="absolute left-sm top-1/2 -translate-y-1/2 font-body-md text-on-surface-variant">₹</span>
+<input id="opp-salary" class="form-input pl-8" placeholder="e.g. 12L - 15L / yr" type="text"/>
 </div>
 </div>
 </div>
@@ -293,11 +293,11 @@
 <button class="p-1 rounded text-on-surface hover:bg-surface-container" type="button"><span class="material-symbols-outlined text-[18px]">format_list_bulleted</span></button>
 <button class="p-1 rounded text-on-surface hover:bg-surface-container" type="button"><span class="material-symbols-outlined text-[18px]">format_list_numbered</span></button>
 </div>
-<textarea class="form-input rounded-t-none h-40 resize-y" placeholder="Describe the responsibilities and day-to-day tasks..."></textarea>
+<textarea id="opp-description" class="form-input rounded-t-none h-40 resize-y" placeholder="Describe the responsibilities and day-to-day tasks..."></textarea>
 </div>
 <div>
 <label class="form-label">Eligibility &amp; Requirements</label>
-<textarea class="form-input h-24 resize-y" placeholder="List required skills, degrees, or years of experience..."></textarea>
+<textarea id="opp-requirements" class="form-input h-24 resize-y" placeholder="List required skills, degrees, or years of experience..."></textarea>
 </div>
 <div class="pt-sm border-t border-outline-variant/20">
 <label class="form-label">External Application Link</label>
@@ -305,7 +305,7 @@
 <span class="inline-flex items-center px-sm rounded-l-lg border border-r-0 border-outline-variant bg-surface-container-low text-on-surface-variant font-body-md text-body-md">
 <span class="material-symbols-outlined text-[20px]">link</span>
 </span>
-<input class="form-input rounded-l-none" placeholder="https://boards.greenhouse.io/ust/jobs/123" type="url"/>
+<input id="opp-url" class="form-input rounded-l-none" placeholder="https://boards.greenhouse.io/ust/jobs/123" type="url"/>
 </div>
 <p class="font-body-sm text-[12px] text-on-surface-variant mt-2">If provided, applicants will be redirected here instead of applying internally.</p>
 </div>
@@ -335,9 +335,18 @@
     </div>
 </div>
 
+<!-- Load Firebase SDK and initialization script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-db.js"></script>
+
 <script>
+        let currentWorkMode = 'hybrid';
+
         // Simple logic to toggle map visibility based on work mode
         function setWorkMode(mode, btnElement) {
+            currentWorkMode = mode;
             // Update active state on buttons
             document.querySelectorAll('.work-mode-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -372,8 +381,35 @@
         });
 
         // Form Submit Handler
-        document.getElementById('opportunity-form').addEventListener('submit', function(e) {
+        document.getElementById('opportunity-form').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const title = document.getElementById('opp-title').value.trim();
+            const company = document.getElementById('opp-company').value.trim();
+            const category = document.getElementById('opp-category').value;
+            const location = document.getElementById('opp-location').value.trim();
+            const deadline = document.getElementById('opp-deadline').value;
+            const salary = document.getElementById('opp-salary').value.trim();
+            const description = document.getElementById('opp-description').value.trim();
+            const compensation = document.querySelector('input[name="compensation"]:checked').value;
+            
+            const newOpp = {
+                id: Math.random().toString(36).substr(2, 9),
+                title: title,
+                company: company,
+                category: category,
+                mode: currentWorkMode,
+                comp: compensation,
+                location: currentWorkMode === 'remote' ? 'remote' : location.toLowerCase(),
+                locationText: currentWorkMode === 'remote' ? 'Remote' : (location || 'India'),
+                salary: salary ? `₹${salary}` : (compensation === 'unpaid' ? 'Unpaid' : ''),
+                closes: deadline ? `Closes on ${deadline}` : '',
+                posted: 'Posted just now',
+                description: description || 'No details provided.',
+                logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTURm5-BAHhzUMp6j1FViotUolW2QXvoNsaxTr5wvVAVqnu5dh0f0l6UEdKcAw2Nfm5BG9IeEdU9z7KwJZ7WPIjmbWWsyLazMwWHStmBTXyC3yms4vTm0YDDtqmiOmQCW1Nmzb55t2FRGfpQiqjwni7QUMJ50L8JmXom1lHiuRCbfUryTgrORVN4-zEnjkpS6TtF6OK_LYZ5Im7kUpvW_mGs1FdILKX6F2SmKvMwqlwjxu8SjEir3pEL6gN2w8jHadRoelhiWuuo8'
+            };
+            
+            await addOpportunity(newOpp);
             
             const toast = document.getElementById('toast-notification');
             toast.classList.remove('hidden');

@@ -400,6 +400,12 @@
     </div>
 </div>
 
+<!-- Load Firebase SDK and initialization script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-db.js"></script>
+
 <script>
 function skipAuthPrompt() {
     localStorage.setItem('auth_prompt_dismissed', 'true');
@@ -413,21 +419,58 @@ function skipAuthPrompt() {
     }, 300);
 }
 
+function renderFeaturedOpportunities(list) {
+    const container = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-gutter');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    // Select first 3 active opportunities
+    const featured = list.slice(0, 3);
+    
+    featured.forEach(opp => {
+        const card = document.createElement('div');
+        card.setAttribute('data-id', opp.id);
+        card.onclick = () => window.location.href = 'job-details.html';
+        card.className = 'featured-card bg-surface rounded-[16px] border border-outline-variant/40 p-[24px] soft-shadow hover-card-shadow transition-all duration-300 group cursor-pointer flex flex-col h-full hover:border-primary';
+        
+        card.innerHTML = `
+            <div class="flex justify-between items-start mb-md">
+                <div class="w-12 h-12 rounded-lg border border-outline-variant/30 overflow-hidden bg-white p-xs flex items-center justify-center">
+                    <img alt="${opp.company} logo" class="w-full h-full object-contain" src="${opp.logo}"/>
+                </div>
+                <button aria-label="Save" class="text-outline-variant hover:text-primary transition-colors" onclick="event.stopPropagation(); this.querySelector('span').innerText = this.querySelector('span').innerText === 'bookmark' ? 'bookmark_border' : 'bookmark'">
+                    <span class="material-symbols-outlined">bookmark_border</span>
+                </button>
+            </div>
+            <div class="mb-sm flex-grow">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-xs group-hover:text-primary transition-colors">${opp.title}</h3>
+                <p class="font-body-md text-body-md text-on-surface-variant">${opp.company} • ${opp.locationText || (opp.location === 'remote' ? 'Remote' : opp.location)}</p>
+            </div>
+            <div class="flex flex-wrap gap-xs mb-md">
+                <span class="bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm px-xs py-[2px] rounded-md">${opp.mode.charAt(0).toUpperCase() + opp.mode.slice(1)}</span>
+                ${opp.salary ? `<span class="bg-surface-variant text-on-surface-variant font-label-sm text-label-sm px-xs py-[2px] rounded-md">${opp.salary}</span>` : ''}
+                <span class="bg-tertiary-fixed text-on-tertiary-fixed-variant font-label-sm text-label-sm px-xs py-[2px] rounded-md">${opp.category.charAt(0).toUpperCase() + opp.category.slice(1)}</span>
+            </div>
+            <div class="pt-sm border-t border-outline-variant/20 flex items-center justify-between">
+                <span class="font-label-sm text-label-sm text-outline flex items-center gap-xs">
+                    <span class="material-symbols-outlined text-[16px]">schedule</span> ${opp.posted}
+                </span>
+                <span class="font-label-md text-label-md text-primary opacity-0 group-hover:opacity-100 transition-opacity">Apply Now</span>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+}
+
+async function loadFeatured() {
+    const oppList = await getOpportunities();
+    renderFeaturedOpportunities(oppList);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Hide removed opportunities
-    try {
-        const removed = JSON.parse(localStorage.getItem('removed_opportunities') || '[]');
-        if (removed && removed.length > 0) {
-            document.querySelectorAll('.featured-card').forEach(card => {
-                const id = card.getAttribute('data-id');
-                if (removed.includes(id)) {
-                    card.style.display = 'none';
-                }
-            });
-        }
-    } catch (e) {
-        console.error('Error loading removed opportunities:', e);
-    }
+    // 1. Fetch and render featured listings
+    loadFeatured();
 
     // 2. Auth welcome modal logic
     const userLoggedIn = localStorage.getItem('user_logged_in') === 'true';

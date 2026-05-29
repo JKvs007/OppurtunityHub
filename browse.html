@@ -474,6 +474,12 @@
 </nav>
 </footer>
 
+<!-- Load Firebase SDK and initialization script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-db.js"></script>
+
 <script>
 // Filter state variables
 let bookmarksOnly = false;
@@ -487,12 +493,138 @@ function getRemovedOpportunities() {
     }
 }
 
-function removeOpportunity(id) {
-    const removed = getRemovedOpportunities();
-    if (!removed.includes(id)) {
-        removed.push(id);
-        localStorage.setItem('removed_opportunities', JSON.stringify(removed));
-    }
+async function removeOpportunity(id) {
+    await deleteOpportunity(id);
+    loadAndRender();
+}
+
+function renderOpportunitiesList(list) {
+    const container = document.getElementById('opportunities-list');
+    container.innerHTML = '';
+    
+    const isAdmin = localStorage.getItem('admin_logged_in') === 'true';
+    
+    list.forEach(opp => {
+        const card = document.createElement('article');
+        card.className = 'opp-card bg-surface-container-lowest rounded-xl border border-surface-variant p-md soft-shadow hover:border-primary transition-all duration-300 group flex flex-col h-full relative cursor-pointer';
+        card.setAttribute('data-id', opp.id);
+        card.setAttribute('data-title', opp.title);
+        card.setAttribute('data-company', opp.company);
+        card.setAttribute('data-category', opp.category);
+        card.setAttribute('data-mode', opp.mode);
+        card.setAttribute('data-comp', opp.comp);
+        card.setAttribute('data-location', opp.locationText || opp.location);
+        card.onclick = () => window.location.href = 'job-details.html';
+        
+        // Bookmark status
+        const isBookmarked = getBookmarks().includes(opp.id);
+        const bookmarkIcon = isBookmarked ? 'bookmark' : 'bookmark_border';
+        const bookmarkFill = isBookmarked ? "'FILL' 1" : "'FILL' 0";
+        
+        // Work Mode Badge
+        let workModeBadgeBg = 'bg-surface-container-high text-on-surface';
+        if (opp.mode === 'remote') workModeBadgeBg = 'bg-tertiary-fixed text-on-tertiary-fixed';
+        else if (opp.mode === 'hybrid') workModeBadgeBg = 'bg-secondary-fixed text-on-secondary-fixed-variant';
+        
+        let workModeIcon = 'domain';
+        if (opp.mode === 'remote') workModeIcon = 'public';
+        
+        // Map Preview
+        let mapHtml = '';
+        if (opp.hasMap && opp.mapBg) {
+            mapHtml = `
+                <div class="col-span-1 h-full min-h-[80px] rounded-lg overflow-hidden border border-surface-variant relative soft-shadow">
+                    <div class="absolute inset-0 bg-surface-container-highest" style="background-image: url('${opp.mapBg}'); background-size: cover; background-position: center;"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary drop-shadow-md text-[28px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        const descriptionGridClass = mapHtml ? 'grid grid-cols-3 gap-sm mb-md flex-grow' : 'mb-md flex-grow';
+        const descriptionContent = mapHtml ? `
+            <div class="col-span-2">
+                <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3">
+                    ${opp.description}
+                </p>
+            </div>
+            ${mapHtml}
+        ` : `
+            <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                ${opp.description}
+            </p>
+        `;
+
+        card.innerHTML = `
+            <div class="absolute top-md right-md z-10">
+                <button aria-label="Save Opportunity" class="bookmark-btn text-outline hover:text-primary transition-colors p-1" onclick="event.stopPropagation(); toggleBookmark('${opp.id}', this)">
+                    <span class="material-symbols-outlined" style="font-variation-settings: ${bookmarkFill};">${bookmarkIcon}</span>
+                </button>
+            </div>
+            <div class="flex items-start gap-sm mb-sm relative z-10">
+                <div class="w-12 h-12 rounded-lg bg-surface-container border border-outline-variant flex items-center justify-center flex-shrink-0 overflow-hidden bg-white p-xs">
+                    <img alt="${opp.company} Logo" class="w-full h-full object-contain" src="${opp.logo}"/>
+                </div>
+                <div class="pr-8">
+                    <h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors text-[20px]">${opp.title}</h3>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">${opp.company}</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-xs mb-sm relative z-10">
+                <span class="inline-flex items-center gap-1 ${workModeBadgeBg} px-2 py-1 rounded-md font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">${workModeIcon}</span> ${opp.mode.charAt(0).toUpperCase() + opp.mode.slice(1)}
+                </span>
+                <span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">location_on</span> ${opp.locationText || (opp.location === 'remote' ? 'Remote' : opp.location)}
+                </span>
+                ${opp.salary ? `
+                <span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">${opp.salary.includes('/hr') ? 'paid' : 'attach_money'}</span> ${opp.salary}
+                </span>` : ''}
+                ${opp.closes ? `
+                <span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2 py-1 rounded-md font-label-sm text-label-sm">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0;">timer</span> ${opp.closes}
+                </span>` : ''}
+            </div>
+            <div class="${descriptionGridClass}">
+                ${descriptionContent}
+            </div>
+            <div class="mt-auto flex items-center justify-between pt-sm border-t border-surface-variant z-10">
+                <span class="font-label-sm text-label-sm text-outline">${opp.posted}</span>
+                <button class="bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg transition-colors" onclick="event.stopPropagation(); window.location.href='job-details.html'">
+                    Apply Now
+                </button>
+            </div>
+        `;
+        
+        // Add Admin controls
+        if (isAdmin) {
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'absolute top-12 right-2 p-1.5 bg-error/10 hover:bg-error hover:text-white text-error rounded-full transition-all z-20 flex items-center justify-center';
+            deleteBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">delete</span>';
+            deleteBtn.title = 'Remove Fake Company/Listing';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (confirm('Are you sure you want to remove this listing?')) {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.transform = 'scale(0.9)';
+                    card.style.opacity = '0';
+                    setTimeout(() => {
+                        removeOpportunity(opp.id);
+                    }, 300);
+                }
+            });
+            card.appendChild(deleteBtn);
+        }
+        
+        container.appendChild(card);
+    });
+}
+
+async function loadAndRender() {
+    const oppList = await getOpportunities();
+    renderOpportunitiesList(oppList);
     filterOpportunities();
 }
 
@@ -513,26 +645,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </button>
         `;
         document.body.prepend(banner);
-
-        document.querySelectorAll('.opp-card').forEach(card => {
-            const id = card.getAttribute('data-id');
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'absolute top-12 right-2 p-1.5 bg-error/10 hover:bg-error hover:text-white text-error rounded-full transition-all z-20 flex items-center justify-center';
-            deleteBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">delete</span>';
-            deleteBtn.title = 'Remove Fake Company/Listing';
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (confirm('Are you sure you want to remove this listing?')) {
-                    card.style.transition = 'all 0.3s ease';
-                    card.style.transform = 'scale(0.9)';
-                    card.style.opacity = '0';
-                    setTimeout(() => {
-                        removeOpportunity(id);
-                    }, 300);
-                }
-            });
-            card.appendChild(deleteBtn);
-        });
     }
 
     // Parse URL Query parameters
@@ -559,8 +671,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateBookmarkIconState();
     }
 
-    initializeBookmarksUI();
-    filterOpportunities();
+    loadAndRender();
 });
 
 // Bookmark Toggle functions

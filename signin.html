@@ -284,8 +284,18 @@ OpportunityHub
 </div>
 </div>
 </div>
+<!-- Load Firebase SDK and initialization script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="firebase-db.js"></script>
+
 <script>
+// Keep track of current view state ('login' or 'signup')
+let currentMode = 'login';
+
 function setMode(mode) {
+    currentMode = mode;
     const headerTitle = document.querySelector('.text-center h1');
     const headerDesc = document.querySelector('.text-center p');
     const nameField = document.getElementById('name-field-container');
@@ -307,24 +317,102 @@ function setMode(mode) {
     }
 }
 
+// Simulated Auth fallback
+function handleSimulatedLogin(email, name, mode) {
+    if (mode === 'signup') {
+        alert("Account created successfully (Simulated mode). An email verification link has been sent to " + email + ". Please verify it to log in.");
+        setMode('login');
+        const emailInput = document.getElementById('login-email');
+        if (emailInput) emailInput.value = email;
+    } else {
+        localStorage.setItem('user_logged_in', 'true');
+        if (email === 'oppurtunityhubber@gmail.com') {
+            localStorage.setItem('admin_logged_in', 'true');
+            localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
+        } else {
+            localStorage.removeItem('admin_logged_in');
+            localStorage.setItem('user', JSON.stringify({ name: name || 'Alex Chen', email: email || 'alex.chen@example.com' }));
+        }
+        window.location.href = 'browse.html';
+    }
+}
+
+// Process Firebase Auth logic
+async function processAuth(email, password, name, mode) {
+    if (!auth) {
+        // Fallback to simulation if Firebase is blocked or script didn't load
+        handleSimulatedLogin(email, name, mode);
+        return;
+    }
+    
+    try {
+        if (mode === 'signup') {
+            // Create account in Firebase
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            
+            // Set display name
+            if (name) {
+                await user.updateProfile({ displayName: name });
+            }
+            
+            // Send Verification Email
+            await user.sendEmailVerification();
+            
+            alert("Account created successfully! An email verification link has been sent to " + email + ". Please verify your email before logging in.");
+            setMode('login');
+            const emailInput = document.getElementById('login-email');
+            if (emailInput) emailInput.value = email;
+        } else {
+            // Sign in to Firebase
+            const userCredential = await auth.signInWithEmailAndPassword(email, password);
+            const user = userCredential.user;
+            
+            // Check verification status
+            if (user.emailVerified || user.email === 'oppurtunityhubber@gmail.com') {
+                localStorage.setItem('user_logged_in', 'true');
+                if (user.email === 'oppurtunityhubber@gmail.com') {
+                    localStorage.setItem('admin_logged_in', 'true');
+                    localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: user.email }));
+                } else {
+                    localStorage.removeItem('admin_logged_in');
+                    localStorage.setItem('user', JSON.stringify({ name: user.displayName || 'Alex Chen', email: user.email }));
+                }
+                window.location.href = 'browse.html';
+            } else {
+                alert("Please verify your email address before logging in. We have sent a verification link to " + user.email + ".");
+                // Sign out to prevent unverified active session
+                await auth.signOut();
+            }
+        }
+    } catch (error) {
+        // If Firebase Auth is disabled/unconfigured, fallback to simulated login for smooth UX/testing
+        if (error.code === 'auth/operation-not-allowed' || error.code === 'auth/network-request-failed' || error.message.includes('not enabled')) {
+            console.warn("Firebase Auth is not fully configured. Falling back to local simulation.", error);
+            handleSimulatedLogin(email, name, mode);
+        } else {
+            alert(error.message);
+        }
+    }
+}
+
 // Attach listener to left card form submit button
 document.querySelector('form button').addEventListener('click', (e) => {
     e.preventDefault();
     const emailInput = document.getElementById('login-email');
     const nameInput = document.getElementById('login-name');
-    const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-    const name = nameInput ? nameInput.value.trim() : '';
+    const passwordInput = document.getElementById('login-password');
     
-    if (email === 'oppurtunityhubber@gmail.com') {
-        localStorage.setItem('admin_logged_in', 'true');
-        localStorage.setItem('user_logged_in', 'true');
-        localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
-    } else {
-        localStorage.setItem('user_logged_in', 'true');
-        localStorage.removeItem('admin_logged_in');
-        localStorage.setItem('user', JSON.stringify({ name: name || 'Alex Chen', email: email || 'alex.chen@example.com' }));
+    const email = emailInput ? emailInput.value.trim() : '';
+    const name = nameInput ? nameInput.value.trim() : '';
+    const password = passwordInput ? passwordInput.value : '';
+    
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
     }
-    window.location.href = 'browse.html';
+    
+    processAuth(email, password, name, currentMode);
 });
 
 // Attach listener to desktop signup button if it exists
@@ -332,21 +420,20 @@ const desktopBtn = document.querySelector('.bg-primary-container button');
 if (desktopBtn) {
     desktopBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        const emailInput = document.getElementById('desktop-email');
         const nameInput = document.getElementById('desktop-name');
-        const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
-        const name = nameInput ? nameInput.value.trim() : '';
+        const emailInput = document.getElementById('desktop-email');
+        const passwordInput = document.getElementById('desktop-password');
         
-        if (email === 'oppurtunityhubber@gmail.com') {
-            localStorage.setItem('admin_logged_in', 'true');
-            localStorage.setItem('user_logged_in', 'true');
-            localStorage.setItem('user', JSON.stringify({ name: 'Admin User', email: 'oppurtunityhubber@gmail.com' }));
-        } else {
-            localStorage.setItem('user_logged_in', 'true');
-            localStorage.removeItem('admin_logged_in');
-            localStorage.setItem('user', JSON.stringify({ name: name || 'Alex Chen', email: email || 'alex.chen@example.com' }));
+        const name = nameInput ? nameInput.value.trim() : '';
+        const email = emailInput ? emailInput.value.trim() : '';
+        const password = passwordInput ? passwordInput.value : '';
+        
+        if (!email || !password) {
+            alert("Please fill out all fields.");
+            return;
         }
-        window.location.href = 'browse.html';
+        
+        processAuth(email, password, name, 'signup');
     });
 }
 
